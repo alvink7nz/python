@@ -1,10 +1,28 @@
-table = 11
+table = 3
+correct_answer = 0
 for i in range(1, 13):
     print('What\'s', i, 'x', table, '?')
     guess = input()
     ans = i * table
     if int(guess) == ans:
         print('Correct!')
+        correct_answer = correct_answer + 1
     else:
         print('No, it\'s', ans)
-print('Finished!')
+print(f'good job! You got {correct_answer} out of 12')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

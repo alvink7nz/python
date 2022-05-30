@@ -1,2 +1,14 @@
 from turtle import *
+from time import sleep
 pendown()
+def turtle_controller(do, val):
+    do = do.upper()
+    if do == 'F':
+        forward(val)
+    elif do == 'R':
+        right(val)
+    
+for i in range(6):
+    turtle_controller('F', 100) 
+    turtle_controller('R', 60)
+    sleep(2)

@@ -1,5 +1,6 @@
 from tkinter import *
 from random import randint
+from time import sleep, time
 HEIGHT = 500
 WIDTH = 800
 window = Tk()
@@ -32,10 +33,39 @@ bub_r = list()
 bub_speed = list()
 MIN_BUB_R = 10
 MAX_BUB_R = 30
+MAX_BUB_SPD = 10
 GAP = 100
 def create_bubble():
     x = WIDTH + GAP
     y = randint(0, HEIGHT)
     r = randint(MIN_BUB_R, MAX_BUB_R)
-    id1 = c.create_oval(x - r, y - r, x + r, y + r, outline='white')
+    id1 = c.create_oval(x - r, y - r, x + r, y + r, outline='white', fill='red')
+    bub_id.append(id1)
+    bub_r.append(r)
+    bub_speed.append(randint(1, MAX_BUB_SPD))
+    def move_bubbles():
+        for i in range(len(bub_id)):
+            c.move(bub_id[i], -bub_speed[i], 0)
+def get_coords(id_num):
+    pos = c.coords(id_num)
+    x = (pos[0] + pos[2])/2
+    y = (pos[1] + pos[3])/2
+    return x, y 
+def del_bubble(i):
+    del bub_r[i]
+    del bub_speed[i]
+    c.delete(bub_id[i])
+    del bub_id[i]
+def clean_up_bubs():
+    for i in range(len(bub_id)-1, -1, -1):
+        x, y = get_coords(bub_id[i])
+        if x < -GAP:
+            del_bubble(i)
+#MAIN GAME LOOP
+
+
+        
+    
+
+
 

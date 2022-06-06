@@ -1,20 +1,15 @@
 from turtle import *
-from time import sleep
-pendown()
-def turtle_controller(do, val):
-    do = do.upper()
-    if do == 'F':
-        forward(val)
-    elif do == 'R':
-        right(val)
-    elif do == 'L':
-        left(val)
-        
-    turtle_controller('F', 100) 
-    turtle_controller('R', 60)
-    turtle_controller('F', 100)
-    turtle_controller('L', 120)
-    turtle_controller('F', 50)
-    turtle_controller('L', 120)
-    turtle_controller('F', 200)
-sleep(10)
+instructions = '''Enter a program for a drawing:
+eg F100-R45-U-F100-L45-D-F100-R90-B50
+N = new drawing
+U/D = pen up/pen down
+F = forward
+B = backward
+R = right(put the degrees after)
+L = left(put the degrees after)'''
+Screen = getscreen()
+while True:
+    t_program = Screen.textinput('drawing machine', instructions)
+    print(t_program)
+    if t_program == None or t_program.upper() == 'END':
+        break

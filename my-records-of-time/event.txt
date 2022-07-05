@@ -1,3 +1,7 @@
-my birthday,5/11/2022
+my birthday,05/11/2022
 christmas,25/12/2022
-pi day,14/3/2022
+pi day,14/03/2023
+left handers day,13/08/2022
+aria's birthday,03/08/2022
+mum's birthday,22/11/2022
+holiday,14/08/2022

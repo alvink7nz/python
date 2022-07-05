@@ -2,11 +2,15 @@ name = ['Alvin', 'Tony']
 verb = ['kicks', 'buys', 'throws']
 noun = ['lion', 'plane', 'bycicle', 'house', 'table', 'brain']
 from random import randint
-from tracemalloc import stop
 def pick(words):
     num_words = len(words)
     num_picked = randint(0, num_words - 1)
     word_picked = words[num_picked]
     return word_picked
-print(pick(name), pick(verb), 'a', pick(noun), end='.\n')
-       
+while True:
+    print(pick(name), pick(verb), 'a', pick(noun), end='.\n')
+    again = input('want anoter one? yes or no.\n ')
+    if again.lower == 'yes':
+        print(pick(name), pick(verb), 'a', pick(noun))
+    else:
+        break   

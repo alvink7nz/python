@@ -1,5 +1,0 @@
-from curses import window
-from tkinter import *
-from tkinter import colorchooser
-window = Tk()
-colorchooser.askcolor

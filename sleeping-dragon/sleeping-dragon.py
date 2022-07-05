@@ -1,4 +1,5 @@
 from pgzero.actor import *
+from pgzero.screen import *
 import math
 
 WIDTH = 800
@@ -52,3 +53,11 @@ hard_lair = {
     "sllep_counter": 0,
     "wake_counter": 0
 }
+
+lairs = [easy_lair, medium_lair, hard_lair]
+hero = Actor("hero", pos=HERO_START)
+
+def draw():
+    global lairs, eggs_collected, lives, game_complete
+    Screen.clear()
+    Screen.blit("dungeon", (0, 0))

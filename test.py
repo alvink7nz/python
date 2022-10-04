@@ -1,1 +1,2 @@
-print("Hello, I'm Alvin!!!!!!!")
+myList = [ x for x in range(1, 6) ]
+print(myList)

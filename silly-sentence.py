@@ -8,9 +8,8 @@ def pick(words):
     word_picked = words[num_picked]
     return word_picked
 while True:
-    print(pick(name), pick(verb), 'a', pick(noun), end='.\n')
-    again = input('want anoter one? yes or no.\n ')
-    if again.lower == 'yes':
-        print(pick(name), pick(verb), 'a', pick(noun))
-    else:
-        break   
+    again = 'yes'
+    while again =='yes':
+        print(pick(name), pick(verb), 'a', pick(noun), end='.\n')
+        again = input('want anoter one? yes or no.\n ')
+    break

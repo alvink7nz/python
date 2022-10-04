@@ -57,7 +57,41 @@ hard_lair = {
 lairs = [easy_lair, medium_lair, hard_lair]
 hero = Actor("hero", pos=HERO_START)
 
+screen = Screen() # TODO
+
 def draw():
     global lairs, eggs_collected, lives, game_complete
-    Screen.clear()
-    Screen.blit("dungeon", (0, 0))
+    screen.clear()
+    screen.blit("dungeon", (0, 0))
+    if game_over:
+        screen.draw.text("GAME OVER!", fontsize=60, centre=CENTRE, color=FONT_COLOUR)
+    elif game_complete:
+        screen.draw.text("YOU WON!", fontsize=60, center=CENTRE, color=FONT_COLOUR)
+    else:
+        hero.draw()
+        draw_lairs(lairs)
+        draw_counters(eggs_collected, lives)
+def draw_lairs(lairs_to_draw):
+    for lair in lairs_to_draw:
+        lair["dragon"].draw()
+        if lair['egg_hidden'] is False:
+            lair['eggs'].draw()
+
+def draw_counters(eggs_collected, lives):
+    screen.blit("egg-count", pos=(0, HEIGHT - 30))
+    screen.draw.text(str(eggs_collected),
+                     fontsize=40,
+                     pos=(30, HEIGHT - 30),
+                     color=FONT_COLOUR)
+    screen.blit("life-count", pos=(60, HEIGHT - 30))
+    screen.draw.text(str(lives),
+                     fontsize=40,
+                     pos=(30, HEIGHT - 30),
+                     color=FONT_COLOUR)
+    screen.draw.text(str(lives),
+                     fontsize=40,
+                     pos=(90, HEIGHT - 30),
+                     color=FONT_COLOUR)
+
+def update():
+    pass

@@ -1,4 +1,4 @@
-from tkinter import HIDDEN, NORMAL, Button, Tk, Canvas
+from tkinter import HIDDEN, NORMAL, Tk, Canvas
 from time import sleep
 
 def toggle_eyes():

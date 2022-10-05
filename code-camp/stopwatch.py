@@ -1,27 +1,31 @@
-from tkinter import Button, Tk, Canvas
-from time import sleep 
+from tkinter import Button, Tk, Label
 
-def resetn():
-    pass
-def count_time(stop_count, count_thing):
-    resetn()
-    while stop_count is not True: # TODO: this is an infinite loop, how to solve it?
-        sleep(1)
-        count_thing = count_thing + 1
+def resetn(reseter):
+    reseter = 0
 
-
+def count_time(num):
+    num+=1
+    
+def stop_num(count_n):
+    return count_time(count_n)
 
 
 root = Tk()
 root.title('stopwatch')
-c = Canvas(root, height=420, width=420, bg='green')
-c.pack() # TODO: why it doesn't show the canvas?
 count_thing = 0
-count_num = c.create_text(160, 210, anchor='center', font='Comfortaa 30 bold', fill='white', text=count_thing)
-reset_n = Button(root, anchor='e', text='reset', height=3, width=3)
-stop_count = Button(root, anchor='s', text='stop', height=3, width=3)
+count_num = Label(root, anchor='center', font='Comfortaa 30 bold', text=count_thing)
+reset_n = Button(root, anchor='e', text='reset', height=3, width=3,  command=resetn(count_thing))
+stop_count = Button(root, anchor='sw', text='stop', height=3, width=3, command=stop_num(count_thing))
 
-start = Button(root, anchor='w', text='start', height=3, width=3, command=count_time(stop_count, count_thing))
-stopwatch = c.create_text(420, 150, anchor='s', font='Courier 28 bold underline', fill='black', text='stopwatch')
+start = Button(root, anchor='w', text='start', height=3, width=3, command=count_time(count_thing))
+stopwatch = Label(root, anchor='n', font='Pacifica 28 bold', text='stopwatch')
+while count_time is True:
+    root.after(1000, count_time(count_thing))
+
+count_num.pack()
 reset_n.pack()
 start.pack()
+stop_count.pack()
+stopwatch.pack()
+
+root.mainloop()

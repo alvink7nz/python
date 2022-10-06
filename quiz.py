@@ -15,7 +15,7 @@ def check_guess(guess, answer):
         print('the correct answer is' + answer)
 score = 0
 print('this is a quiz')
-guess1 = input('What is the most popular language?')
+guess1 = input('What is the most popular native language?')
 check_guess(guess1, 'chinese')
 guess2 = input('there are more vending machines in Japan than people in New zealand. True or False?')
 check_guess(guess2, 'true')

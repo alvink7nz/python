@@ -35,6 +35,9 @@ start = Button(root, anchor='w', text='start', height=3, width=3, command=start_
 
 stopwatch = Label(root, anchor='n', font='Pacifica 28 bold', text='stopwatch')
 
+if count_thing == 1000:
+    isnotStopped = False
+
 count_num.pack()
 reset_n.pack()
 start.pack()

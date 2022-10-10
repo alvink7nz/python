@@ -1,19 +1,63 @@
 from tkinter import *
+
+count_thing = -1
+isnotStopped = True
+
+def counter_loop():
+    global isnotStopped, count_thing
+    if isnotStopped:
+        count_thing+=1
+        count_num.config(text=count_thing)
+    root.after(1000, counter_loop)
+
+def resetn():
+    global isnotStopped, count_thing
+    count_thing = 0
+    isnotStopped = False
+    count_num.config(text=count_thing)
+
+
+def start_loop():
+    global isnotStopped, count_thing  
+    isnotStopped = True
+    
+def stop_loop():
+    global isnotStopped
+    isnotStopped = False
+
+root = Tk()
+root.title('stopwatch')
+count_num = Label(root, anchor='center', font='Comfortaa 30 bold', text=count_thing)
+reset_n = Button(root, anchor='e', text='reset', height=3, width=3,  command=resetn)
+stop_count = Button(root, anchor='e', text='stop', height=3, width=3, command=stop_loop)
+
+start_button = Button(root, anchor='w', text='start', height=3, width=3, command=start_loop)
+
+stopwatch = Label(root, anchor='n', font='Pacifica 28 bold', text='stopwatch')
+
+if count_thing == 1000:
+    isnotStopped = False
+
+count_num.pack()
+reset_n.pack()
+start_button.pack()
+stop_count.pack()
+stopwatch.pack()
 from tkinter.simpledialog import askstring
 import winsound
 
 is_going = False
 
 def reset():
-    global is_going, timer_label, sec_label, timer_num, sec, counter_num, user_input
-    is_going = False
+    global timer_label, sec_label, timer_num, sec, counter_num, user_input, isnotStopped
+    isnotStopped = False
     timer_num = counter_num
     timer_label.config(text='minutes: {}'.format(timer_num))
     sec = 0
     sec_label.config(text='seconds: {}'.format(sec))
     yes_or_no = askstring(title='change or not', prompt='do you want to change your number?')
     if yes_or_no == 'no':
-        is_going = True
+        isnotStopped = True
     if yes_or_no == 'yes':
         user_input = askstring(title='what number', prompt='what\'s your number?')
         timer_num = int(user_input)
@@ -36,12 +80,12 @@ def start_loop():
     root.after(1000, start_loop)
 
 def start():    
-    global is_going
-    is_going = True
+    global isnotStopped
+    isnotStopped = True
     
 def stop():
-    global is_going
-    is_going = False
+    global isnotStopped
+    isnotStopped = False
 
 root = Tk()
 root.title('timer')
@@ -52,12 +96,14 @@ sec = 0
 timer_label = Label(root, anchor='center', font='arial 28 bold', text='minutes: {}'.format(timer_num))
 sec_label = Label(root, anchor='center', font='arial 28 bold', text=f'seconds: {sec}')
 reset_button = Button(root, anchor='center', font='arial 28', text='reset', command=reset)
-start_num = Button(root, anchor='center', font='arial 28', text='start', command=start)
+start_button = Button(root, anchor='center', font='arial 28', text='start', command=start)
 stop_num = Button(root, anchor='center', font='arial 28', text='stop', command=stop)
 reset_button.pack()
 timer_label.pack()
 sec_label.pack()
-start_num.pack()
+start_button.pack()
 stop_num.pack()
 start_loop()
+root.mainloop()
+counter_loop()
 root.mainloop()

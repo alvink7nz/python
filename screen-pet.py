@@ -1,5 +1,4 @@
 from tkinter import HIDDEN, NORMAL, Tk, Canvas
-from time import sleep
 
 def toggle_eyes():
     c.itemconfigure(pupil_left, state=HIDDEN)
@@ -102,8 +101,3 @@ while root.mainloop():
     root.after(time, sad)
     time = time + 10000
 root.mainloop()
-
-        
-   
-
-

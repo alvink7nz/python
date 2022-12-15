@@ -1,4 +1,4 @@
-name = ['Alvin', 'Tony']
+name = ['Alvin','Kelly', 'Tony']
 verb = ['kicks', 'buys', 'throws']
 noun = ['lion', 'plane', 'bycicle', 'house', 'table', 'brain']
 from random import randint

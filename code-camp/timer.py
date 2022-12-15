@@ -15,7 +15,7 @@ def reset():
     if yes_or_no == 'no':
         is_going = True
     if yes_or_no == 'yes':
-        user_input = askstring(title='what number', prompt='what\'s your number?')
+        user_input = askstring(title='what number', prompt='what\'s your number of minutes?')
         timer_num = int(user_input)
         counter_num = timer_num
         timer_label.config(text='minutes: {}'.format(timer_num))
@@ -48,7 +48,9 @@ root.title('timer')
 user_input = askstring(title='timer number', prompt='enter the number of minutes you want your timer to be: ')
 timer_num = int(user_input)
 counter_num = timer_num
-sec = 0
+seconds = askstring(title='second number', prompt='what\'s the number of seconds you want it to be?')
+sec = int(seconds)
+counter_sec = sec
 timer_label = Label(root, anchor='center', font='arial 28 bold', text='minutes: {}'.format(timer_num))
 sec_label = Label(root, anchor='center', font='arial 28 bold', text=f'seconds: {sec}')
 reset_button = Button(root, anchor='center', font='arial 28', text='reset', command=reset)

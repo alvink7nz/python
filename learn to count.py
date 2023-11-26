@@ -1,5 +1,7 @@
 from tkinter import simpledialog, messagebox
 
+test_or_learn = input('Press l for learning, Press t for testing and Press q to quit')
+
 limit = 9
 def add():
     global count_num, count_operator, limit, counter, count_num2
@@ -20,4 +22,9 @@ count_num = simpledialog.askstring(title='what number to add from', prompt='what
 count_num2 = count_num
 counter_num = simpledialog.askstring(title='what number to add from', prompt='what number to add from')
 counter = int(counter_num)
-add()
+
+if test_or_learn == 'q':
+    quit()
+
+if test_or_learn == 'l':
+    print('')

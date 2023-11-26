@@ -1,0 +1,9 @@
+
+
+instructions = input('Enter the instructions (max 5 letters) \n')
+comma_counter = 0
+letters = []
+while comma_counter <= len(instructions)+1:
+    letters.append(instructions[comma_counter])
+    comma_counter = comma_counter + 1
+print(letters)

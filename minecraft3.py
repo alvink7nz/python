@@ -24,7 +24,7 @@ miniBlock = Entity(
 
 for i in range(-10, 10):
     for j in range(-10, 10):
-        Block((i, 0, j), selectedBlock)
+        Block((i, 0, j), "grass.png")
 
 Sky()
 app.run()

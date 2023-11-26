@@ -8,7 +8,12 @@ player = FirstPersonController(
     position=(0, 5, 0),
     speed=5
 )
-
+blockTextures = {
+    "grass": load_texture(),
+    "dirt": load_texture(),
+    "stone": load_texture(),
+    "bedrock": load_texture()
+}
 def Block(position, blocktype):
     texture_path = blocktype
     texture = load_texture(texture_path)

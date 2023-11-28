@@ -1,7 +1,7 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-selectedBlock = "grass.png"
+selectedBlock = "dirt.png"
 app = Ursina(title="minecraft")
 player = FirstPersonController(
     mouse_sensesivity=Vec2(100, 100),
@@ -9,27 +9,29 @@ player = FirstPersonController(
     speed=5
 )
 blockTextures = {
-    "grass": load_texture(),
-    "dirt": load_texture(),
-    "stone": load_texture(),
-    "bedrock": load_texture()
+    "grass": load_texture("alvin/python/grass.png"),
+    "dirt": load_texture("alvin/python/dirt.png"),
+    "stone": load_texture("alvin/python/stone.png"),
+    "bedrock": load_texture("alvin/python/bedrock.png")
 }
 def Block(position, blocktype):
     texture_path = blocktype
     texture = load_texture(texture_path)
     return Entity(model="cube", position=position, scale=1, origin_y=-0.5, texture=texture, collider="box")
-miniBlocksBlock = load_texture(selectedBlock)
 
-miniBlock = Entity(
-    parent=camera,
-    scale=0.2,
-    texture=miniBlocksBlock,
-    position=(0.35, 0.25, 0.5)
-)
+
 
 for i in range(-10, 10):
     for j in range(-10, 10):
         Block((i, 0, j), "grass.png")
+
+def input(key):
+    if key == "left mouse down":
+        hit_info = raycast(camera.world_position, camera.forward, distance=10)
+        if hit_info.hit:
+            block = Block(hit_info.entity.position + hit_info.normal, selectedBlock)
+    if key == "right mouse down" and mouse.hovered_entity:
+        destroy(mouse.hovered_entity)
 
 Sky()
 app.run()

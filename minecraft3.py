@@ -1,6 +1,7 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 from perlin_noise import PerlinNoise
+from time import sleep
 
 noise = PerlinNoise(octaves=3, seed=random.randint(1, 1000))
 treeX = random.randint(-10, 10)
@@ -12,6 +13,24 @@ player = FirstPersonController(
     position=(0, 5, 0),
     speed=5
 )
+def flat(position, blockType, width=1, height=1, **kwargs):
+    flatEntity = Entity(
+        model=Mesh(
+            vertices=[
+                (-width / 2, -height / 2, 0),
+                (width / 2, -height / 2, 0),
+                (width / 2, height / 2, 0),
+                (-width / 2, height / 2, 0),
+            ],
+            mode='faces',  # Use 'faces' for solid surface
+        ),
+        texture=blockType,
+        position=position,
+        **kwargs
+    )
+    flatEntity.collider = 'box'  # Add a collider to the entity for interactions
+    return flatEntity
+
 def Block(position, blocktype):
     texture_path = blocktype
     texture = load_texture(texture_path)
@@ -28,17 +47,14 @@ def create_tree(position, trunk_height=5, leaves_height=3):
             for k in range(1, leaves_height + 1):
                 if i**2 + j**2 + (k - 1)**2 <= leaves_radius**2:
                     Block((position[0] + i, position[1] + trunk_height + k - 1, position[2] + j), "leaf.png")
-treeSeed = random.randint(0, 4)
-if treeSeed == 0:
-    treeSeed = 0.005
-elif treeSeed == 1:
-    treeSeed = 0.01
-elif treeSeed == 2:
-    treeSeed = 0.02
-elif treeSeed == 3:
-    treeSeed = 0.03
-elif treeSeed == 4:
-    treeSeed = 0.05
+def create_mini_drop(position, block_type):
+    # Create a mini drop entity at the given position
+    mini_drop = Entity(model='cube', position=position, scale=0.5, collider='box', texture=block_type)
+    mini_drops.append(mini_drop)
+
+mini_drops = []
+
+treeSeed = random.uniform(0, 0.05)
 treeLeaves = random.randint(1, 3)
 if treeLeaves == 1:
     treeTrunk = 2
@@ -77,12 +93,39 @@ def input(key):
         selectedBlock = "wood.png"
     if key == "6":
         selectedBlock = "leaf.png"
+    if key == "7":
+        selectedBlock = "sapling.png"
     if key == "left mouse down":
-        hit_info = raycast(camera.world_position, camera.forward, distance=10)
+        hit_info = raycast(camera.world_position, camera.forward, distance=3)
         if hit_info.hit:
-            Block(hit_info.entity.position + hit_info.normal, selectedBlock)
+            if selectedBlock != "sapling.png":
+                Block(hit_info.entity.position + hit_info.normal, selectedBlock)
+            else:
+                flat(hit_info.entity.position + hit_info.normal, selectedBlock)
     if key == "right mouse down" and mouse.hovered_entity:
-        destroy(mouse.hovered_entity)
+        # Check if the player is clicking on a block
+        if mouse.hovered_entity.texture:
+            block_type = mouse.hovered_entity.texture
 
+            # Store the position before destroying the block
+            block_position = mouse.hovered_entity.position
+
+            # Destroy the block
+            destroy(mouse.hovered_entity)
+
+            # Create a mini drop at the stored position
+            create_mini_drop(block_position, block_type)
+
+
+def update():
+    global mini_drops
+
+    # Iterate over mini drops in reverse order to avoid issues with modifying the list during iteration
+    for mini_drop in reversed(mini_drops):
+        # Check if the player is close enough to collect the mini drop
+        if distance(player.position, mini_drop.position) < 2.5:
+            # Collect the mini drop
+            mini_drops.remove(mini_drop)
+            destroy(mini_drop)
 Sky()
 app.run()

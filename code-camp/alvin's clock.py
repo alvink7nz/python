@@ -6,16 +6,6 @@ import winsound
 
 root = Tk()
 
-def counter_loop():
-        global isnotStopped, count_thing, couunter
-        if isnotStopped:
-            couunter+=1
-            count_sec.config(text=couunter)
-            if sec/60 == int:
-                count_thing+=1
-                count_num.config(text=count_thing)
-        root.after(1000, counter_loop)
-
 def resetn():
     global isnotStopped, count_thing
     count_thing = 0
@@ -52,6 +42,15 @@ def start_the_loop():
             winsound.Beep(2000, 200) 
         reset()
     root.after(1000, start_the_loop)
+def counter_loop():
+        global isnotStopped, count_thing, couunter
+        if isnotStopped:
+            couunter+=1
+            count_sec.config(text=couunter)
+            if sec/60 == int:
+                count_thing+=1
+                count_num.config(text=count_thing)
+        root.after(1000, counter_loop)
 
 def start():    
     global isnotStopped

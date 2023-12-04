@@ -101,7 +101,7 @@ def input(key):
             if selectedBlock != "sapling.png":
                 Block(hit_info.entity.position + hit_info.normal, selectedBlock)
             else:
-                flat(hit_info.entity.position + hit_info.normal, selectedBlock)
+                flat(mouse.hovered_entity, selectedBlock)
     if key == "right mouse down" and mouse.hovered_entity:
         # Check if the player is clicking on a block
         if mouse.hovered_entity.texture:

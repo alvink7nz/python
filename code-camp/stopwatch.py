@@ -37,6 +37,14 @@ def stop_loop():
 root = Tk()
 root.title('stopwatch')
 root.geometry("1000x600")
+count_thing_milisec = str(count_thing_milisec)
+count_thing_sec = str(count_thing_sec)
+if count_thing_milisec.startswith(count_thing_sec):
+    count_thing_milisec.replace(count_thing_sec, "", 1)
+count_thing_milisec = int(count_thing_milisec)
+count_thing_sec = int(count_thing_sec)
+
+
 count_num_sec = Label(root, anchor='center', font='Comfortaa 30 bold', text=count_thing_sec)
 count_num_milisec = Label(root, anchor='center', font='Comfortaa 30 bold', text=count_thing_milisec)
 reset_n = Button(root, anchor='e', text='reset', height=3, width=5,  command=resetn)
@@ -49,14 +57,15 @@ stopwatch = Label(root, anchor='n', font='Pacifica 28 bold', text='stopwatch')
 separator = Label(root, anchor='center', font="Comfortaa 30 bold", text=".")
 
 if count_thing_sec == 1000:
-    isnotStopped = False
+    count_thing_sec = 0
 
-count_num_sec.pack(side='up')
-separator.pack(side='up')
-count_num_milisec.pack(side='up')
+count_num_sec.pack(side='top')
+separator.pack(side='top')
+count_num_milisec.pack(side='top')
 reset_n.pack()
 start.pack()
 stop_count.pack()
 stopwatch.pack()
 counter_loop_milisec()
+counter_loop_sec()
 root.mainloop()

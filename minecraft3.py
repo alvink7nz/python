@@ -13,23 +13,21 @@ player = FirstPersonController(
     position=(0, 5, 0),
     speed=5
 )
-def flat(position, blockType, width=1, height=1, **kwargs):
-    flatEntity = Entity(
-        model=Mesh(
-            vertices=[
-                (-width / 2, -height / 2, 0),
-                (width / 2, -height / 2, 0),
-                (width / 2, height / 2, 0),
-                (-width / 2, height / 2, 0),
-            ],
-            mode='faces',  # Use 'faces' for solid surface
-        ),
-        texture=blockType,
-        position=position,
-        **kwargs
-    )
-    flatEntity.collider = 'box'  # Add a collider to the entity for interactions
-    return flatEntity
+class Mob(Entity):
+    def __init__(self, position=(0, 0, 0), scale=1, texture="slime.png"):
+        super().__init__(
+            model="cube",
+            texture=texture,
+            collider="box",
+            scale=scale,
+            position=position,
+        )
+mobs = []
+def create_mobs(num_mobs=5):
+    for _ in range(num_mobs):
+        mob_position = (random.uniform(-10, 10), 1, random.uniform(-10, 10))
+        mob = Mob(position=mob_position, scale=1)
+        mobs.append(mob)
 
 def Block(position, blocktype):
     texture_path = blocktype
@@ -53,7 +51,7 @@ def create_mini_drop(position, block_type):
     mini_drops.append(mini_drop)
 
 mini_drops = []
-
+create_mobs()
 treeSeed = random.uniform(0, 0.05)
 treeLeaves = random.randint(1, 3)
 if treeLeaves == 1:
@@ -93,15 +91,10 @@ def input(key):
         selectedBlock = "wood.png"
     if key == "6":
         selectedBlock = "leaf.png"
-    if key == "7":
-        selectedBlock = "sapling.png"
     if key == "left mouse down":
         hit_info = raycast(camera.world_position, camera.forward, distance=3)
         if hit_info.hit:
-            if selectedBlock != "sapling.png":
-                Block(hit_info.entity.position + hit_info.normal, selectedBlock)
-            else:
-                flat(mouse.hovered_entity, selectedBlock)
+            Block(hit_info.entity.position + hit_info.normal, selectedBlock)
     if key == "right mouse down" and mouse.hovered_entity:
         # Check if the player is clicking on a block
         if mouse.hovered_entity.texture:
@@ -127,5 +120,7 @@ def update():
             # Collect the mini drop
             mini_drops.remove(mini_drop)
             destroy(mini_drop)
+    for mob in mobs:
+        mob.x += 1 * time.dt
 Sky()
 app.run()

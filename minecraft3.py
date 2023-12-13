@@ -1,7 +1,6 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 from perlin_noise import PerlinNoise
-from time import sleep
 
 noise = PerlinNoise(octaves=3, seed=random.randint(1, 1000))
 treeX = random.randint(-10, 10)
@@ -23,11 +22,10 @@ class Mob(Entity):
             position=position,
         )
 mobs = []
-def create_mobs(num_mobs=5):
-    for _ in range(num_mobs):
-        mob_position = (random.uniform(-10, 10), 1, random.uniform(-10, 10))
-        mob = Mob(position=mob_position, scale=1)
-        mobs.append(mob)
+def create_mobs(height=1):
+    mob_position = (random.uniform(-10, 10), height, random.uniform(-10, 10))
+    mob = Mob(position=mob_position, scale=1)
+    mobs.append(mob)
 
 def Block(position, blocktype):
     texture_path = blocktype
@@ -51,7 +49,6 @@ def create_mini_drop(position, block_type):
     mini_drops.append(mini_drop)
 
 mini_drops = []
-create_mobs()
 treeSeed = random.uniform(0, 0.05)
 treeLeaves = random.randint(1, 3)
 if treeLeaves == 1:
@@ -72,11 +69,11 @@ for i in range(-10, 10):
                 Block((i, k - min_height, j), "grass.png")
                 if random.random() < treeSeed:
                     create_tree(position=(i, k - min_height + 1, j), trunk_height=treeTrunk,leaves_height=treeLeaves)
+                create_mobs(height+1)
             elif k > 2:
                 Block((i, k - min_height, j), "stone.png")
             else:
                 Block((i, k - min_height, j), "dirt.png")
-
 def input(key):
     global selectedBlock
     if key == "1":
@@ -120,7 +117,5 @@ def update():
             # Collect the mini drop
             mini_drops.remove(mini_drop)
             destroy(mini_drop)
-    for mob in mobs:
-        mob.x += 1 * time.dt
 Sky()
 app.run()

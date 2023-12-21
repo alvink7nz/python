@@ -5,6 +5,8 @@ from perlin_noise import PerlinNoise
 noise = PerlinNoise(octaves=3, seed=random.randint(1, 1000))
 treeX = random.randint(-10, 10)
 treeZ = random.randint(-10, 10)
+world_width = 20
+world_depth = 20
 selectedBlock = "dirt.png"
 app = Ursina(title="minecraft")
 player = FirstPersonController(
@@ -107,11 +109,11 @@ def input(key):
             create_mini_drop(block_position, block_type)
 
 def jump(object):
-    object.jump_height = 0.5
-    object.gravity = 0.5
+    object.jump_height = 1
+    object.gravity = 1.6
     object.grounded = True
     object.speed = 3
-    jumpChance = random.randint(0,1)
+    jumpChance = random.randint(0,3)
     if jumpChance == 0 and object.grounded:
         random_direction = Vec3(random.uniform(-1, 1), 1, random.uniform(-1, 1)).normalized()
         object.y += 0.1  # Lift the player slightly to start the jump
@@ -122,9 +124,14 @@ def jump(object):
     object.y -= object.gravity * time.dt
 
     # Check if the player has reached the ground
-    if object.y < 1:
-        object.y = 1  # Set the player back to the ground
-        object.grounded = True  # Set grounded to True
+    object.x = clamp(object.x, -world_width / 2, world_width / 2)
+    object.z = clamp(object.z, -world_depth / 2, world_depth / 2)
+    height_info = raycast(object.position, Vec3(0, -1, 0), distance=2, ignore=[object])
+
+    # Check if random_jump_mob is below the ground
+    if height_info.hit and height_info.entity.y > object.y:
+        object.y = object.entity.y
+        object.grounded = True
 
 def update():
     global mini_drops

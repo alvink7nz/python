@@ -106,6 +106,25 @@ def input(key):
             # Create a mini drop at the stored position
             create_mini_drop(block_position, block_type)
 
+def jump(object):
+    object.jump_height = 0.5
+    object.gravity = 0.5
+    object.grounded = True
+    object.speed = 3
+    jumpChance = random.randint(0,1)
+    if jumpChance == 0 and object.grounded:
+        random_direction = Vec3(random.uniform(-1, 1), 1, random.uniform(-1, 1)).normalized()
+        object.y += 0.1  # Lift the player slightly to start the jump
+        object.position += random_direction * object.jump_height
+        object.grounded = False  # Set grounded to False to prevent double jumps
+
+    # Apply gravity to the player
+    object.y -= object.gravity * time.dt
+
+    # Check if the player has reached the ground
+    if object.y < 1:
+        object.y = 1  # Set the player back to the ground
+        object.grounded = True  # Set grounded to True
 
 def update():
     global mini_drops
@@ -113,9 +132,12 @@ def update():
     # Iterate over mini drops in reverse order to avoid issues with modifying the list during iteration
     for mini_drop in reversed(mini_drops):
         # Check if the player is close enough to collect the mini drop
-        if distance(player.position, mini_drop.position) < 2.5:
+        if distance(player.position, mini_drop.position) < 1.5:
             # Collect the mini drop
             mini_drops.remove(mini_drop)
             destroy(mini_drop)
+    
+    for mob in mobs:
+        jump(mob)
 Sky()
 app.run()

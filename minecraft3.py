@@ -130,7 +130,7 @@ def jump(object):
 
     # Check if random_jump_mob is below the ground
     if height_info.hit and height_info.entity.y > object.y:
-        object.y = object.entity.y
+        object.y = object.y
         object.grounded = True
 
 def update():

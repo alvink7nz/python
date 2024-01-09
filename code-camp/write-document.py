@@ -4,79 +4,64 @@ from tkinter import filedialog
 class TextFileExplorerApp:
     def __init__(self, root):
         self.root = root
-
-        # Create a Text widget for input
-        self.page = Text(root, height=10, width=40)
+        self.page = Text(root, height=50, width=75)
         self.page.pack(pady=10)
 
-        # Create a button to open a file explorer
         open_button = Button(root, text="Open File", command=self.open_file)
-        open_button.pack(pady=5)
+        open_button.pack(side="left")
 
-        # Create a button to save the text to a file
         save_button = Button(root, text="Save to File", command=self.save_to_file)
-        save_button.pack(pady=5)
+        save_button.pack(side="left")
+
+        increaseFont = Button(root, text="+", command=self.increase_font_size)
+        decreaseFont = Button(root, text="-", command=self.decrease_font_size)
+        increaseFont.pack(side="left")
+        decreaseFont.pack(side="left")
 
     def open_file(self):
-        # Open a file explorer to select a file
         file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
-
-        # Read the contents of the selected file and insert it into the Text widget
         if file_path:
             with open(file_path, "r") as file:
                 file_contents = file.read()
-                self.page.delete(1.0, END)  # Clear previous content
+                self.page.delete(1.0, END)
                 self.page.insert(END, file_contents)
 
     def save_to_file(self):
-        # Open a file explorer to select a destination file
+        # Temporarily remove the "highlight" tag before saving
+        self.page.tag_remove("highlight", 1.0, END)
+
         file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
-
-        # Get the contents of the Text widget
         text_contents = self.page.get(1.0, END)
-
-        # Write the contents to the selected file
         if file_path:
             with open(file_path, "w") as file:
                 file.write(text_contents)
 
-def increase_font_size(line):
-    global page
-    start, end = page.tag_ranges("sel")
-    highlighted_text = page.get(start, end)
-    
-    # Increase the font size of the highlighted text
-    current_size = page.tag_cget("highlight", "font").split()[line]
-    new_size = int(current_size) + 2
-    page.tag_configure("highlight", font=("Arial", new_size))
-    
-    # Update the highlighted text
-    page.tag_add("highlight", start, end)
+        # Reapply the "highlight" tag after saving
+        self.page.tag_add("highlight", 1.0, END)
 
-def decrease_font_size(line):
-    start, end = page.tag_ranges("sel")
-    highlighted_text = page.get(start, end)
-    
-    # Increase the font size of the highlighted text
-    current_size = page.tag_cget("highlight", "font").split()[line]
-    new_size = int(current_size) - 1
-    page.tag_configure("highlight", font=("Arial", new_size))
-    
-    # Update the highlighted text
-    page.tag_add("highlight", start, end)
+    def increase_font_size(self):
+        self.adjust_font_size(2)
+
+    def decrease_font_size(self):
+        self.adjust_font_size(-2)
+
+    def adjust_font_size(self, delta):
+        try:
+            current_size = int(self.page.tag_cget("highlight", "font").split()[1])
+        except (TclError, ValueError, IndexError):
+            current_size = 12  # Default font size if not set
+
+        new_size = max(1, current_size + delta)  # Ensure font size doesn't go below 1
+        self.page.tag_configure("highlight", font=("Arial", new_size))
+
+        # Check if any text is selected
+        if self.page.tag_ranges("sel"):
+            start, end = self.page.tag_ranges("sel")
+            self.page.tag_add("highlight", start, end)
 
 root = Tk()
 root.title = "Write a Document"
 
-page = Text(root, wrap="word", width=70, height=50)
-
 TextFileExplorerApp(root=root)
 
-highlightedSpace = StringVar()
-increaseFont = Button(root, text="+", command=increase_font_size)
-decreaseFont = Button(root, text="-", command=decrease_font_size)
-
-page.pack(padx=10, pady=10)
-increaseFont.pack(pady=15)
-decreaseFont.pack(pady=20)
 root.mainloop()

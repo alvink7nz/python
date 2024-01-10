@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
-
-class TextFileExplorerApp:
+from PIL import ImageTk
+class MainText:
     def __init__(self, root):
         self.root = root
         self.page = Text(root, height=50, width=75)
@@ -17,6 +17,11 @@ class TextFileExplorerApp:
         decreaseFont = Button(root, text="-", command=self.decrease_font_size)
         increaseFont.pack(side="left")
         decreaseFont.pack(side="left")
+
+        self.image_label = Label(self.root)
+        self.image_label.pack(padx=10, pady=10)
+        openImg = Button(root, text="Open Image", command=self.open_image)
+        openImg.pack(side="left")
 
     def open_file(self):
         file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
@@ -58,10 +63,19 @@ class TextFileExplorerApp:
         if self.page.tag_ranges("sel"):
             start, end = self.page.tag_ranges("sel")
             self.page.tag_add("highlight", start, end)
+    def open_image(self):
+        file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.gif")])
 
+        if file_path:
+            image = Image.open(file_path)
+            image.thumbnail((300, 300))  # Resize the image to fit in a 300x300 box
+            photo = ImageTk.PhotoImage(image)
+
+            self.image_label.config(image=photo)
+            self.image_label.image = photo  
 root = Tk()
 root.title = "Write a Document"
 
-TextFileExplorerApp(root=root)
+MainText(root=root)
 
 root.mainloop()

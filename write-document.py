@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-from PIL import ImageTk
+from PIL import Image, ImageTk
 class MainText:
     def __init__(self, root):
         self.root = root
@@ -10,7 +10,7 @@ class MainText:
         open_button = Button(root, text="Open File", command=self.open_file)
         open_button.pack(side="left")
 
-        save_button = Button(root, text="Save to File", command=self.save_to_file)
+        save_button = Button(root, text="Save File", command=self.save_to_file)
         save_button.pack(side="left")
 
         increaseFont = Button(root, text="+", command=self.increase_font_size)

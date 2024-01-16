@@ -1,0 +1,7 @@
+snippets:
+
+tick and cross:
+if question == answer:
+    showinfo(message=u"\u2713")
+else:
+    showinfo(message=u"\u2717")

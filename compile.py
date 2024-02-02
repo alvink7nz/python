@@ -6,7 +6,7 @@ class Compile:
         if "print" in string:
             self.index = string.index("print")
             self.printStr = self.index + 1
-            output.config
+            output
 root = Tk()
 output = Label(root)
 codeText = Text(root, height=50, width=120)

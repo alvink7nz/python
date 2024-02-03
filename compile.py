@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-from tkinter import *
-
-class Compile:
-    def __init__(self, page) -> None:
-        self.keyword = page.split()
-    def Strings(self, string) -> list:
-        if "print" in string:
-            self.index = string.index("print")
-            self.printThing = self.index
-
-=======
 import tkinter as tk
 from tkinter import scrolledtext, simpledialog
 import sys
@@ -61,4 +49,3 @@ result_text.pack(padx=10, pady=5)
 
 # Run the Tkinter event loop
 root.mainloop()
->>>>>>> ef9cf9ed7a03ffd9cb63faa33236136134c7bdde

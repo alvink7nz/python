@@ -56,7 +56,7 @@ class MainText:
         except (TclError, ValueError, IndexError):
             current_size = 12  # Default font size if not set
 
-        new_size = max(1, current_size + delta)  # Ensure font size doesn't go below 1
+        new_size = max(5, current_size + delta)  # Ensure font size doesn't go below 1
         self.page.tag_configure("highlight", font=("Arial", new_size))
 
         # Check if any text is selected

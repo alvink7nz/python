@@ -1,85 +1,52 @@
-import turtle as t
-import tkinter as tk
-from tkinter import messagebox
+import turtle
 
+def draw_commands(commands):
+    t = turtle.Turtle()
+    pen_down = True  # Initialize pen state to down
 
-def splitString(string):
-    dashSplit = string.split("-")
-    command = []
-    for i in dashSplit:
-        commaSplit = i.split(",")
-        command.append(commaSplit)
-    return command
-repeat = 0
-def drawCommand(drCo):
-    global drawScreen
-    def line(direction, long=0):
-        global repeat
-        if direction == "F" :
-            myturtle.forward(long)
-        elif direction == "B":
-            myturtle.backward(long)
-        elif direction == "R":
-            myturtle.right(long)
-        elif direction == "L":
-            myturtle.left(long)
-        elif direction == "U":
-            myturtle.up()
-        elif direction == "F":
-            myturtle.down()
-        elif direction == "REPEAT"  and repeat == 0:
-            repeat = long + 1
-        elif direction == "REPEAT"  and repeat > 0:
-            pass
-        elif direction == "ENDREPEAT" and repeat == 0:
-            pass
-        elif direction == "ENDREPEAT" and repeat > 0:
-            for i in range(len(drCo)-1,-1,-1):
-                if drCo[i][0] == "REPEAT":
-                    messagebox.showinfo("Repeat", f"repeat found: {i}")
-                    break
-            repeat -= 1
-    targetLetter = ["F","B","R","L","U","D","REAPEAT","ENDREPEAT"]
-    found = True
-    for element in drCo:
-        firstElement = element[0]
-        if any(char in targetLetter for char in firstElement):
-            pass
+    for command in commands:
+        action = command[0]
+        value = int(command[1:])
+        
+        if action == 'F':
+            if pen_down:
+                t.pendown()
+            else:
+                t.penup()
+            t.forward(value)
+        elif action == 'B':
+            if pen_down:
+                t.pendown()
+            else:
+                t.penup()
+            t.backward(value)
+        elif action == 'R':
+            t.right(value)
+        elif action == 'L':
+            t.left(value)
+        elif action == 'P':
+            if value == 1:
+                pen_down = True
+            else:
+                pen_down = False
+
+def main():
+    command_str = input("Enter drawing commands (e.g., REPEAT,4-F,100-P,0-R,90-ENDREPEAT): ")
+    
+    # Split commands into individual instructions
+    commands = command_str.split('-')
+
+    # Process each command
+    for command in commands:
+        if 'REPEAT' in command:
+            repeat_count = int(command.split(',')[1])
+            repeat_commands = command.split(',')[2:-1]
+            for _ in range(repeat_count):
+                draw_commands(repeat_commands)
         else:
-            messagebox.showwarning("Incorect Element", f"Incorect Element From Command: {firstElement}")
-            return
-    for i in drCo:
-        way = i[0]
-        if len(i) > 1:
-            strMuch = i[1]
-            much = int(strMuch)
-        else:
-            strMuch = None
-            much = None
-        if much is not None:
-            line(way, much)
-        elif much is None:
-            line(way)
-    drawScreen.exitonclick()
-drawScreen = t.Screen()
-drawScreen.screensize(1400,800)
-myturtle = t.Turtle()
-myturtle.hideturtle()
+            draw_commands([command])
 
-instructions = '''Command Rules:
-                      F = Forward
-                      B = Backward
-                      R = Turn right
-                      L = Turn left
-                      U = Pen up
-                      D = Pen down
-                      then a comma
-                      then enter length(pixels) or degrees(if L or R)
-                      then a dash
-                      repeat until finished command
-                      e.g, F,100-R,90-F,100. It will go forward 100 pixels,
-                      turn right 90 degrees and go foward 100 pixels.
-                      Enter command below'''
-draw = drawScreen.textinput("Command", instructions)
-splitDraw = splitString(draw)
-drawCommand(splitDraw)
+    turtle.done()
+
+if __name__ == "__main__":
+    main()

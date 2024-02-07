@@ -1,56 +1,62 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, TensorDataset
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-# Step 1: Define the neural network architecture
-class SimpleNN(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super(SimpleNN, self).__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, output_size)
+# Download NLTK resources
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
 
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=1)
+# Function to preprocess the text
+def preprocess_text(text):
+    # Tokenize the text into sentences
+    sentences = sent_tokenize(text)
+    # Remove stopwords and punctuation, and lemmatize the words
+    stop_words = set(stopwords.words("english"))
+    lemmatizer = WordNetLemmatizer()
+    preprocessed_text = []
+    for sentence in sentences:
+        words = word_tokenize(sentence)
+        preprocessed_words = [lemmatizer.lemmatize(word.lower()) for word in words if word.isalnum() and word.lower() not in stop_words]
+        preprocessed_text.append(' '.join(preprocessed_words))
+    return preprocessed_text
 
-# Step 2: Prepare the data
-# Replace this with your own data loading and preprocessing
-# Example with random data:
-input_size = 10
-output_size = 2
-data_size = 1000
+# Function to answer questions
+def answer_question(question, text):
+    preprocessed_text = preprocess_text(text)
+    preprocessed_question = preprocess_text(question)
+    
+    # Join preprocessed text and question into one list
+    preprocessed_data = preprocessed_text + preprocessed_question
+    
+    # Calculate TF-IDF vectors for the text and question
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_matrix = tfidf_vectorizer.fit_transform(preprocessed_data)
+    
+    # Calculate cosine similarity between question and each sentence in the text
+    similarity_scores = cosine_similarity(tfidf_matrix[:-len(preprocessed_question)], tfidf_matrix[-len(preprocessed_question):])
+    
+    # Find the index of the most similar sentence
+    max_score_index = similarity_scores.argmax()
+    
+    # Return the corresponding sentence from the text
+    return preprocessed_text[max_score_index]
 
-X = torch.randn(data_size, input_size)
-y = torch.randint(0, output_size, (data_size,))
+# Example text
+text = ""
 
-dataset = TensorDataset(X, y)
-train_loader = DataLoader(dataset, batch_size=64, shuffle=True)
-
-# Step 3: Initialize the model, optimizer, and loss function
-model = SimpleNN(input_size, hidden_size=64, output_size=output_size)
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-criterion = nn.NLLLoss()
-
-# Step 4: Train the model
-epochs = 10
-
-for epoch in range(epochs):
-    for batch_X, batch_y in train_loader:
-        optimizer.zero_grad()
-        output = model(batch_X)
-        loss = criterion(output, batch_y)
-        loss.backward()
-        optimizer.step()
-
-    print(f'Epoch {epoch + 1}/{epochs}, Loss: {loss.item()}')
-
-# Step 5: Make predictions
-# Replace this with your own input data for prediction
-input_data = torch.randn(1, input_size)
-predictions = model(input_data)
-predicted_class = torch.argmax(predictions, dim=1).item()
-
-print(f'Predicted Class: {predicted_class}')
+# Interactive question-answering loop
+while True:
+    question = input("Ask a question (or type 'exit' to quit): ")
+    if question.lower() == 'exit':
+        print("Goodbye!")
+        break
+    else:
+        answer = answer_question(question, text)
+        if answer:
+            print("Answer:", answer)
+        else:
+            print("Sorry, I couldn't find an answer to that question.")

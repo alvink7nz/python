@@ -21,13 +21,18 @@ def preprocess_text(text):
     for sentence in sentences:
         words = word_tokenize(sentence)
         preprocessed_words = [lemmatizer.lemmatize(word.lower()) for word in words if word.isalnum() and word.lower() not in stop_words]
-        preprocessed_text.append(' '.join(preprocessed_words))
+        if preprocessed_words:
+            preprocessed_text.append(' '.join(preprocessed_words))
     return preprocessed_text
 
 # Function to answer questions
 def answer_question(question, text):
     preprocessed_text = preprocess_text(text)
     preprocessed_question = preprocess_text(question)
+    
+    # If either the text or question is empty after preprocessing, return None
+    if not preprocessed_text or not preprocessed_question:
+        return None
     
     # Join preprocessed text and question into one list
     preprocessed_data = preprocessed_text + preprocessed_question
@@ -39,14 +44,29 @@ def answer_question(question, text):
     # Calculate cosine similarity between question and each sentence in the text
     similarity_scores = cosine_similarity(tfidf_matrix[:-len(preprocessed_question)], tfidf_matrix[-len(preprocessed_question):])
     
-    # Find the index of the most similar sentence
-    max_score_index = similarity_scores.argmax()
+    # Set a threshold for cosine similarity scores
+    similarity_threshold = 0.1
+    
+    # Find the index of the most similar sentence above the threshold
+    max_score_index = -1
+    for i, score in enumerate(similarity_scores):
+        if score > similarity_threshold:
+            max_score_index = i
+            break
+    
+    # If no sentence above the threshold is found, return a default response
+    if max_score_index == -1:
+        return "I'm sorry, I don't have an answer to that question."
     
     # Return the corresponding sentence from the text
     return preprocessed_text[max_score_index]
 
 # Example text
-text = ""
+text = """
+Natural Language Processing (NLP) is a subfield of linguistics, computer science, and artificial intelligence concerned with the interactions between computers and human language, in particular how to program computers to process and analyze large amounts of natural language data. The goal is a computer capable of 'understanding' the contents of documents, including the contextual nuances of the language within them.
+
+NLP can be applied to various tasks, such as machine translation, sentiment analysis, speech recognition, named entity recognition, and question answering.
+"""
 
 # Interactive question-answering loop
 while True:
@@ -56,7 +76,4 @@ while True:
         break
     else:
         answer = answer_question(question, text)
-        if answer:
-            print("Answer:", answer)
-        else:
-            print("Sorry, I couldn't find an answer to that question.")
+        print("Answer:", answer)

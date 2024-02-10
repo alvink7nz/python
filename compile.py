@@ -33,10 +33,9 @@ def run_code():
 # Create the main window
 root = tk.Tk()
 root.title("Python Code Editor")
-root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
 # Create a text widget for code input
-code_editor = scrolledtext.ScrolledText(root, width=80, height=20)
+code_editor = scrolledtext.ScrolledText(root, width=40, height=15)
 code_editor.pack(padx=10, pady=10)
 
 # Create a button to run the code
@@ -44,7 +43,7 @@ run_button = tk.Button(root, text="Run Code", command=run_code)
 run_button.pack(pady=5)
 
 # Create a text widget for the result
-result_text = scrolledtext.ScrolledText(root, width=60, height=10)
+result_text = scrolledtext.ScrolledText(root, width=40, height=5)
 result_text.pack(padx=10, pady=5)
 
 # Run the Tkinter event loop

@@ -75,14 +75,14 @@ root.title("Number Converter")
 
 # Style
 root.configure(bg="#f0f0f0")
-font_style = ("Comfortaa", 12)
+font_style = ("Helvetica", 16)
 
 # Picture
 image_file = "Converter.png"
 image_pil = Image.open(image_file)
-image_pil = resize_image(image_pil, 200, 150)
+image_pil = resize_image(image_pil, 350, 350)
 image = ImageTk.PhotoImage(image_pil)
-image_label = tk.Label(root, image=image, width=200, height=150)
+image_label = tk.Label(root, image=image, width=350, height=250)
 image_label.grid(row=0, column=0, padx=5, pady=5)
 
 # Frame for the entries

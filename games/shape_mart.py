@@ -1,7 +1,6 @@
 import pygame
 import sys
 import math
-import random
 
 # Initialize Pygame
 pygame.init()
@@ -20,7 +19,10 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
-COLOURS = (BLACK, GREEN, BLUE, YELLOW, CYAN, MAGENTA)
+
+triangle_vertices = ((WIDTH // 2, 50),  # Top
+                     (WIDTH // 2 - 50, 150),  # Bottom left
+                     (WIDTH // 2 + 50, 150) ) # Bottom right
 
 # Define actor properties
 actor_radius = 50
@@ -40,6 +42,14 @@ green_circle_x = WIDTH // 3 * 2
 green_circle_y = HEIGHT // 3 * 2
 
 customer_x, customer_y = 300, 10
+
+target_position = (target_x, target_y)
+
+
+font = pygame.font.SysFont(None, 36)
+
+# Define the money
+ownedMoney = 0
 
 # Main game loop
 running = True
@@ -79,14 +89,21 @@ while running:
     
     # Check if the actor touches the green circle
     distance_to_green_circle = math.sqrt((actor_x - green_circle_x)**2 + (actor_y - green_circle_y)**2)
-    if distance_to_green_circle < actor_radius + green_circle_radius and target_x == actor_x:
-        # Move the target into the green circle
-        target_x, target_y = green_circle_x, green_circle_y
-        targetIsInActor = False
+    if distance_to_green_circle < actor_radius + green_circle_radius:
+        if target_x == actor_x:
+            # Move the target into the green circle
+            target_x, target_y = green_circle_x, green_circle_y
+            targetIsInActor = False
+            ownedMoney += 10
+        
+        
 
-    triangle_vertices = [(WIDTH // 2, 0), (WIDTH // 4, HEIGHT // 2), (3 * WIDTH // 4, HEIGHT // 2)]
-    scaled_triangle_vertices = [(v[0] // 4, v[1] // 4) for v in triangle_vertices]
-    customer_colour = random.choice(COLOURS)
+    
+    dx = target_position[0] - triangle_vertices[0][0]
+    dy = target_position[1] - triangle_vertices[0][1]
+    angle_to_target = math.atan2(dy, dx)
+    distance_to_target = math.sqrt(dx ** 2 + dy ** 2)
+
     # Draw the green circle
     pygame.draw.circle(screen, GREEN, (green_circle_x, green_circle_y), green_circle_radius)
 
@@ -96,7 +113,16 @@ while running:
     # Draw the square actor (hollow circle)
     pygame.draw.circle(screen, BLACK, (int(actor_x), int(actor_y)), actor_radius, actor_thickness)
 
-    pygame.draw.polygon(screen, customer_colour, scaled_triangle_vertices)
+    rect_width = 200
+    rect_height = 100
+    rect_x = 20
+    rect_y = 20
+    pygame.draw.rect(screen, GREEN, (rect_x, rect_y, rect_width, rect_height))
+
+    # Render the variable number text
+    text_surface = font.render(str(ownedMoney), True, BLACK)
+    text_rect = text_surface.get_rect(center=(rect_x + rect_width // 2, rect_y + rect_height // 2))
+    screen.blit(text_surface, text_rect)
 
     # Update the display
     pygame.display.flip()

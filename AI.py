@@ -1,31 +1,27 @@
 import openai
 
-# Set up your OpenAI API key
-api_key = 'alvin'
-openai.api_key = api_key
+# Set your OpenAI API key
+openai.api_key = 'your-api-key'
 
-def generate_text(prompt, max_tokens=50, temperature=0.7):
-    """
-    Generate text based on the given prompt using OpenAI's GPT model.
-    
-    Parameters:
-        prompt (str): The input prompt for text generation.
-        max_tokens (int): Maximum number of tokens to generate.
-        temperature (float): Controls the randomness of the generated text.
-            Higher values make the text more diverse, lower values make it more conservative.
-    
-    Returns:
-        str: Generated text.
-    """
-    response = openai.Completion.create(
-        engine="text-davinci-003",  # You can choose a different engine if desired
-        prompt=prompt,
-        max_tokens=max_tokens,
-        temperature=temperature
+def semantic_search(query, documents):
+    response = openai.Engine("davinci").search(
+        documents=documents,
+        query=query
     )
-    return response.choices[0].text.strip()
+    return response['data']
 
-# Example usage:
-prompt = "Python is a versatile programming language used in many applications."
-generated_text = generate_text(prompt)
-print(generated_text)
+# Example usage
+query = "How does DNA work?"
+documents = [
+    "DNA is a molecule that carries the genetic instructions for growth, development, functioning, and reproduction in all known living organisms.",
+    "The structure of DNA is a double helix, consisting of two long chains of nucleotides twisted around each other.",
+    "DNA replication is the process by which DNA makes a copy of itself during cell division.",
+    "DNA mutations can lead to changes in an organism's traits and can be inherited by offspring.",
+    "Genes are segments of DNA that contain the instructions for building proteins, which perform various functions in the body."
+]
+
+results = semantic_search(query, documents)
+for result in results:
+    print("Document:", result['document'])
+    print("Score:", result['score'])
+    print()

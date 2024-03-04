@@ -20,10 +20,6 @@ YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 
-triangle_vertices = ((WIDTH // 2, 50),  # Top
-                     (WIDTH // 2 - 50, 150),  # Bottom left
-                     (WIDTH // 2 + 50, 150) ) # Bottom right
-
 # Define actor properties
 actor_radius = 50
 actor_thickness = 2
@@ -41,15 +37,20 @@ green_circle_radius = 100
 green_circle_x = WIDTH // 3 * 2
 green_circle_y = HEIGHT // 3 * 2
 
-customer_x, customer_y = 300, 10
+triangle_width = 50
+triangle_height = 50
+triangle_color = MAGENTA
+triangle_x = 0
+triangle_y = 0
+triangle_speed = 3
 
-target_position = (target_x, target_y)
 
 
 font = pygame.font.SysFont(None, 36)
 
 # Define the money
 ownedMoney = 0
+show_triangle = False
 
 # Main game loop
 running = True
@@ -94,15 +95,18 @@ while running:
             # Move the target into the green circle
             target_x, target_y = green_circle_x, green_circle_y
             targetIsInActor = False
-            ownedMoney += 10
-        
-        
 
-    
-    dx = target_position[0] - triangle_vertices[0][0]
-    dy = target_position[1] - triangle_vertices[0][1]
-    angle_to_target = math.atan2(dy, dx)
-    distance_to_target = math.sqrt(dx ** 2 + dy ** 2)
+    if (triangle_x == target_x) and (triangle_y == target_y) and (show_triangle == True):
+        ownedMoney += 1
+
+    angle = math.atan2(target_y - triangle_y, target_x - triangle_x)
+    dx = math.cos(angle) * triangle_speed
+    dy = math.sin(angle) * triangle_speed
+
+    # Move the triangle towards the target
+    if (target_x == green_circle_x) and (target_y == green_circle_y):
+        triangle_x += dx
+        triangle_y += dy
 
     # Draw the green circle
     pygame.draw.circle(screen, GREEN, (green_circle_x, green_circle_y), green_circle_radius)
@@ -110,8 +114,15 @@ while running:
     # Draw the target (small circle)
     pygame.draw.circle(screen, RED, (int(target_x), int(target_y)), target_radius)
 
-    # Draw the square actor (hollow circle)
+    # Draw the circle actor (hollow circle)
     pygame.draw.circle(screen, BLACK, (int(actor_x), int(actor_y)), actor_radius, actor_thickness)
+
+    if show_triangle:
+        pygame.draw.polygon(screen, triangle_color, [
+        (triangle_x, triangle_y - triangle_height // 2),
+        (triangle_x - triangle_width // 2, triangle_y + triangle_height // 2),
+        (triangle_x + triangle_width // 2, triangle_y + triangle_height // 2)
+    ])
 
     rect_width = 200
     rect_height = 100

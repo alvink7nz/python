@@ -11,19 +11,10 @@ def capture_image(cap:cv2.VideoCapture):
     if ret:
         name = askstring("Name", "Enter name of picture")
         if name:
-            cv2.imwrite(f"c:/Users/alvin/Downloads/{name}.jpg", frame)
+            cv2.imwrite(f"c:/Users/alvin/Downloads/Pictures/{name}.jpg", frame)
             messagebox.showinfo("Info", "Image captured successfully!")
     else:
         messagebox.showerror("Error", "Failed to capture image.")
-
-def browse_image(label:tk.Label):
-    file_img = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;")], initialdir="c:/Users/alvin/Downloads")
-    if file_img:
-        img = Image.open(file_img)
-        img.thumbnail((300, 200))  # Resize the image to fit the window
-        img_tk = ImageTk.PhotoImage(img)
-        label.img = img_tk
-        label.config(image=img_tk)
 
 def main():
     root = tk.Tk()
@@ -42,12 +33,6 @@ def main():
     capture_btn = tk.Button(root, text="Capture", command=lambda: capture_image(cap))
     capture_btn.pack()
 
-    image_label = tk.Label(root)
-    image_label.pack()
-
-    browse_btn = tk.Button(root, text="Browse Image", command=lambda: browse_image(image_label))
-    browse_btn.pack()
-    
     # Function to continuously display the camera feed
     def update():
         ret, frame = cap.read()

@@ -1,6 +1,7 @@
 import pygame
 import sys
 import math
+import random
 
 # Initialize Pygame
 pygame.init()
@@ -44,7 +45,9 @@ triangle_x = 0
 triangle_y = 0
 triangle_speed = 3
 
-
+square_size = 100
+square_x = 10  # Start from the left edge
+square_y = 300  # Start from the top edge
 
 font = pygame.font.SysFont(None, 36)
 
@@ -96,17 +99,16 @@ while running:
             target_x, target_y = green_circle_x, green_circle_y
             targetIsInActor = False
 
-    if (triangle_x == target_x) and (triangle_y == target_y) and (show_triangle == True):
-        ownedMoney += 1
-
     angle = math.atan2(target_y - triangle_y, target_x - triangle_x)
     dx = math.cos(angle) * triangle_speed
     dy = math.sin(angle) * triangle_speed
 
     # Move the triangle towards the target
     if (target_x == green_circle_x) and (target_y == green_circle_y):
-        triangle_x += dx
-        triangle_y += dy
+        show_triangle =  True
+        if show_triangle:
+            triangle_x += dx
+            triangle_y += dy
 
     # Draw the green circle
     pygame.draw.circle(screen, GREEN, (green_circle_x, green_circle_y), green_circle_radius)
@@ -116,6 +118,8 @@ while running:
 
     # Draw the circle actor (hollow circle)
     pygame.draw.circle(screen, BLACK, (int(actor_x), int(actor_y)), actor_radius, actor_thickness)
+
+    pygame.draw.rect(screen, CYAN, (square_x, square_y, square_size, square_size))
 
     if show_triangle:
         pygame.draw.polygon(screen, triangle_color, [

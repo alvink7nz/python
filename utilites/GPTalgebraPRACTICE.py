@@ -1,40 +1,24 @@
-from sympy import symbols, Eq, solve
 import random
 
-# Define the symbol
-x = symbols('x')
-
-def generateQuestion():
-    # Generate random coefficients and constants
-    a, b, c, d = [random.randint(-10, 10) for _ in range(4)]
+def generate_algebra_expression(variable='x', max_terms=3, max_coefficient=10, max_exponent=3):
+    expression = ''
+    num_terms = random.randint(1, max_terms)
     
-    # Generate the equation
-    equation = f"{a}*x / {b} = {c}*x + {d}"
-    
-    return equation
-
-def rightAnswer(equation_str):
-    # Split the equation string into its components
-    equation_parts = equation_str.split('=')
-    
-    try:
-        # Create the equation using Eq
-        lhs = eval(equation_parts[0].strip())  # Evaluate the left-hand side
-        rhs = eval(equation_parts[1].strip())  # Evaluate the right-hand side
-        equation = Eq(lhs, rhs)
+    for _ in range(num_terms):
+        coefficient = random.randint(1, max_coefficient)
+        exponent = random.randint(1, max_exponent)
+        if exponent == 1:
+            term = f'{coefficient}{variable}'
+        else:
+            term = f'{coefficient}{variable}^{exponent}'
         
-        # Solve the equation
-        answer = solve(equation, x)
-        
-        return answer
-    except Exception as e:
-        print("Error:", e)
-        return None
+        expression += f'{term} + '
+    
+    # Remove the trailing ' + ' from the last term
+    expression = expression[:-3]
+    
+    return expression
 
-# Generate a random question
-question = generateQuestion()
-
-# Get the correct answer
-correct_answer = rightAnswer(question)
-print("Question:", question)
-print("Correct Answer:", correct_answer)
+if __name__ == "__main__":
+    for _ in range(5):  # Generate 5 random algebraic expressions
+        print(generate_algebra_expression())

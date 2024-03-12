@@ -1,41 +1,43 @@
 import random
+import sympy as alg
 
-def generateQuestion():
+def generateQuestion(variable):
     question = []
-    part1 = []
-    part2 = []
-    for j in range(2):
-        variableCount = 0
-        length = random.randint(2, 7)
-        while length % 2 == 0:
-            length = random.randint(2, 7)
-        for i in range(length):
-            num = random.randint(1, 15)
-            num = str(num)
-            if variableCount <= 2:
-                variableX = random.choice([True, False])
-            if variableX:
-                num = num + 'x'
-                variableCount += 1
-            if i % 2 == 1:
-                symbol = random.choice(["+", "-", "*", "/"])
-                if j == 0:
-                    part1.append(symbol)
-                elif j == 1:
-                    part2.append(symbol)
-            else:
-                if j == 0:
-                    part1.append(num)
-                elif j == 1:
-                    part2.append(num)
-    part1 = ' '.join(part1)
-    part2 = ' '.join(part2)
-    question.append(part1)
-    question.append(part2)
-    question = ' = '.join(question)
-    return question
+    answer = []
+    length = random.randint(2, 4)
+    while length % 2 == 0:
+        length = random.randint(2, 4)
+    for i in range(length):
+        symbol = random.choice(['+', '-', '*', '/'])
+        num = random.randint(1, 9)
+        answerNum = num
+        num = str(num)
+        yesOrNoX = random.choice([True, False])
+        if yesOrNoX:
+            num = num + 'x'
+            answer.append(str(answerNum * variable))
+            question.append(num)
+        elif length == i+1:
+            question.append(num)
+            answer.append(num)
+            print(i)
+        else:
+            question.append(num)
+            question.append(symbol)
+            answer.append(num)
+            answer.append(symbol)
+    answer = ''.join(answer)
+    answerInt = eval(answer)
+    multiplier = 1
+    print("start")
+    while True:
+        result = answerInt * multiplier
+        if isinstance(result, int):
+            answerInt = result
+            print(answerInt)
+            break
+        multiplier += 1
+    print(question)
+    return answer
 
-def rightAnswer():
-    x = random.randint
-    
-print(generateQuestion())
+print(generateQuestion(3))

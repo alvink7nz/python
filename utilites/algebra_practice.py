@@ -16,17 +16,19 @@ def generateQuestion(variable):
         if yesOrNoX:
             num = num + 'x'
             answer.append(str(answerNum * variable))
+            answer.append(symbol)
             question.append(num)
-        elif length == i+1:
+            question.append(symbol)
+        elif length == i + 1:
+            answer.append(str(answerNum * variable))
             question.append(num)
-            answer.append(num)
-            print(i)
         else:
             question.append(num)
             question.append(symbol)
             answer.append(num)
             answer.append(symbol)
     answer = ''.join(answer)
+    
     answerInt = eval(answer)
     multiplier = 1
     print("start")
@@ -37,6 +39,8 @@ def generateQuestion(variable):
             print(answerInt)
             break
         multiplier += 1
+        if multiplier <= 10:
+            generateQuestion(3)
     print(question)
     return answer
 

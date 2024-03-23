@@ -11,7 +11,7 @@ def capture_image(cap:cv2.VideoCapture):
     if ret:
         name = askstring("Name", "Enter name of picture")
         if name:
-            cv2.imwrite(f"c:/Users/alvin/Downloads/Pictures/{name}.jpg", frame)
+            cv2.imwrite(f"c:/Users/alvin/Downloads/Pictures/{name}.png", frame)
             messagebox.showinfo("Info", "Image captured successfully!")
     else:
         messagebox.showerror("Error", "Failed to capture image.")

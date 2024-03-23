@@ -2,7 +2,7 @@ from tkinter import filedialog
 import tkinter as tk
 from PIL import Image, ImageTk
 def browse_image(label:tk.Label):
-    file_img = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;")], initialdir="c:/Users/alvin/Downloads/Pictures")
+    file_img = filedialog.askopenfilename(filetypes=[("Image files", "*.png;")], initialdir="c:/Users/alvin/Downloads/Pictures")
     if file_img:
         img = Image.open(file_img)
         img.thumbnail((300, 200))  # Resize the image to fit the window

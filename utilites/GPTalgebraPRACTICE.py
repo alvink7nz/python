@@ -1,24 +1,14 @@
-import random
+import numpy as np
+from sympy import pprint
 
-def generate_algebra_expression(variable='x', max_terms=3, max_coefficient=10, max_exponent=3):
-    expression = ''
-    num_terms = random.randint(1, max_terms)
-    
-    for _ in range(num_terms):
-        coefficient = random.randint(1, max_coefficient)
-        exponent = random.randint(1, max_exponent)
-        if exponent == 1:
-            term = f'{coefficient}{variable}'
-        else:
-            term = f'{coefficient}{variable}^{exponent}'
-        
-        expression += f'{term} + '
-    
-    # Remove the trailing ' + ' from the last term
-    expression = expression[:-3]
-    
-    return expression
+# Generate random coefficients and exponents
+coefficients = np.random.randint(-10, 10, size=3)
+exponents = np.random.randint(1, 5, size=3)
 
-if __name__ == "__main__":
-    for _ in range(5):  # Generate 5 random algebraic expressions
-        print(generate_algebra_expression())
+# Construct a random polynomial equation
+def generate_random_equation(coefficients, exponents):
+    terms = [f"{coeff}*x**{exp}" for coeff, exp in zip(coefficients, exponents)]
+    return " + ".join(terms)
+
+equation = generate_random_equation(coefficients, exponents)
+pprint(equation)

@@ -15,7 +15,7 @@ class CreateMaze():
         row = 0
         column = 0
         for i in range(100):
-            self.buttons[f"{i}"] = False
+            self.buttons[f"{i+1}"] = False
         for i in range(self.rows):
             self.button_row = []
             row += 50
@@ -23,7 +23,7 @@ class CreateMaze():
             for j in range(self.columns):
                 column += 50
                 self.btn_id = i * self.columns + j  # Generate unique button ID
-                self.button = Button(root)
+                self.button = Button(root, command=self.button_click(self.btn_id, self.buttons, self.rows))
                 self.button.place(x=column, y=row, width=20, height=20)
                 self.button_row.append(self.button)
 
@@ -32,11 +32,14 @@ class CreateMaze():
         x2, y2 = self.button_positions[btn_id2]
         canvas.create_line(x1 + self.button_width // 2, y1 + self.button_height // 2, x2 + self.button_width // 2, y2 + self.button_height // 2, fill="black")
 
-    def button_click(self, btn_id):
-        if btn_id % self.columns != self.columns - 1:  # Check if not in the last column
-            self.draw_line(btn_id, btn_id + 1)  # Draw line with the next button
-        elif btn_id + self.columns < self.rows * self.columns:  # Check if not in the last row
-            self.draw_line(btn_id, btn_id + self.columns)  # Draw line with the button below
+    def button_click(self, btn_id, buttons, height):
+        nextButton = btn_id + 1
+        downButton = btn_id + height
+        if nextButton < 100 or downButton < 100:
+            if buttons[str(nextButton)] == True and nextButton < 100:  # Check if not in the last column
+                self.draw_line(btn_id, btn_id + 1)  # Draw line with the next button
+            elif buttons[str(downButton)] == True and downButton < 100:  # Check if not in the last column
+                self.draw_line(btn_id, btn_id+height)  # Draw line with the next button
 
 root = Tk()
 root.title("Maze Solver")

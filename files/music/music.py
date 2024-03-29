@@ -26,26 +26,26 @@ def get_file_name(file_path):
 def delete_button_frame(frame, file_path):
     frame.destroy()
     buttons.remove(frame)
-    selected_files.remove(file_path)
-    save_selected_files()
+    selectedFiles.remove(file_path)
+    save_selectedFiles()
 
-def save_selected_files():
-    with open("selected_files.txt", "w") as file:
-        for file_path in selected_files:
+def save_selectedFiles():
+    with open("selectedFiles.txt", "w") as file:
+        for file_path in selectedFiles:
             file.write(f"{file_path}\n")
 
-def load_selected_files():
-    if os.path.exists("selected_files.txt"):
-        with open("selected_files.txt", "r") as file:
+def load_selectedFiles():
+    if os.path.exists("selectedFiles.txt"):
+        with open("selectedFiles.txt", "r") as file:
             return [line.strip() for line in file.readlines()]
     else:
         return []
 
 def select_music():
-    file_path = filedialog.askopenfilename(filetypes=[("Music files", "*.mp3;*.wav")])
+    file_path = filedialog.askopenfilename(filetypes=[("Music files", "*.mp3;*.wav")], initialdir="c:/Users/alvin/Downloads")
     if file_path:
-        selected_files.append(file_path)
-        save_selected_files()
+        selectedFiles.append(file_path)
+        save_selectedFiles()
         add_button(file_path)
 
 def set_volume(value):
@@ -63,7 +63,7 @@ root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenhe
 
 
 buttons = []
-selected_files = load_selected_files()
+selectedFiles = load_selectedFiles()
 
 # Create a button for selecting and playing music
 select_button = tk.Button(root, text="Select Music", command=select_music)
@@ -74,7 +74,7 @@ volume_scale = tk.Scale(root, from_=1, to=100, orient=tk.HORIZONTAL, label="Volu
 volume_scale.pack(pady=10)
 
 # Load previously selected files
-for file_path in selected_files:
+for file_path in selectedFiles:
     add_button(file_path)
 
 # Run the Tkinter event loop

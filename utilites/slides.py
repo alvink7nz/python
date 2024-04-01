@@ -1,5 +1,4 @@
 from tkinter import *
-from time import sleep
 
 class Slides():
     def __init__(self, root:Tk, canvas:Canvas):

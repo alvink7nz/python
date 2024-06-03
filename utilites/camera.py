@@ -1,6 +1,6 @@
 import cv2
 import tkinter as tk
-from tkinter import messagebox, filedialog
+from tkinter import messagebox
 from tkinter.simpledialog import askstring
 from PIL import Image, ImageTk
 from time import sleep

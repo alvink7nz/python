@@ -1,4 +1,3 @@
-from tkinter.filedialog import *
 import datetime
 
 todayDate = datetime.datetime.today().date()
@@ -7,23 +6,24 @@ todayDate = todayDate.split("-")
 
 def readFiles():
     dates = []
-    filePath = askopenfilename(title="dates", filetypes=[("Text files", "*.txt")], initialdir="c:/Users/alvin/code/python/utilites/calendar")
-    with open(filePath, 'r') as file:
+    with open("c:/Users/alvin/code/python/utilites/calendar/dates.txt", 'r') as file:
         for line in file:
-            dates.append(line.strip())
+            line = line.split(", ")
+            month, day = line[1].split('/')
+            month = month.zfill(2)  # Zero-pad month to 2 digits
+            day = day.zfill(2)      # Zero-pad day to 2 digits
+             # Construct the full date string and convert to a datetime object to ensure format
+            full_date_str = f"{todayDate[0]}/{month}/{day}"
+            line[1] = full_date_str.strip()
+            eventDate = datetime.datetime.strptime(line[1], "%Y/%m/%d").date()
+            line[1] = eventDate
+            dates.append(line)
     return dates
 
 dates = readFiles()
-findDate = []
-for line in dates:
-    line = line.split(", ")
-    findDate.append(line)
-dates = findDate
 print(dates)
 print(todayDate)
 
-for date in dates:
-    addYrDate = date[1]
-    addYrDate = todayDate[0] + "/" + addYrDate
-    date[1] = addYrDate
-print(dates)
+def differences(date1, date2):
+    difference = date1 - date2
+    return difference

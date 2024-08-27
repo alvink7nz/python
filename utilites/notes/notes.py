@@ -31,6 +31,7 @@ class writeNote():
         self.note = None
         self.newNotes = []
     def displayTextEntry(self):
+        print(self.name.get)
         self.text.pack()
         self.submitText.pack()
     def PutInNote(self):
@@ -45,7 +46,7 @@ class writeNote():
         with open(file_path, 'w') as AllNotes:
             for note in notes:
                 note = note.split(":")
-                if note[0] == self.name:
+                if note[0] == self.name.get():
                     note[1] == self.note
                 note = ':\n'.join(note)
                 print(note)

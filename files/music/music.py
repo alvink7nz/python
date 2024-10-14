@@ -1,6 +1,6 @@
-import tkinter as tk
-from tkinter import filedialog
-from tkinter.simpledialog import askstring
+import inter as 
+from inter import filedialog
+from inter.simpledialog import askstring
 import pygame
 import os
 
@@ -12,15 +12,15 @@ def play_music(file_path:str):
 
 def add_button(file_path:str):
     global names
-    button_frame = tk.Frame(root)
+    button_frame = .Frame(root)
     button_frame.pack()
     name = askstring("Name", f"Create name for {get_file_name(file_path)}")
     names.append(name)
-    play_button = tk.Button(button_frame, text=f"Play {name}", command=lambda: play_music(file_path))
-    play_button.pack(side=tk.LEFT, padx=5)
+    play_button = .Button(button_frame, text=f"Play {name}", command=lambda: play_music(file_path))
+    play_button.pack(side=.LEFT, padx=5)
 
-    delete_button = tk.Button(button_frame, text="Delete", command=lambda: delete_button_frame(button_frame, file_path))
-    delete_button.pack(side=tk.LEFT)
+    delete_button = .Button(button_frame, text="Delete", command=lambda: delete_button_frame(button_frame, file_path))
+    delete_button.pack(side=.LEFT)
 
     buttons.append(button_frame)
 
@@ -57,11 +57,11 @@ def set_volume(value):
     increased_volume = volume * 2
     pygame.mixer.music.set_volume(min(increased_volume, 1.0))
 
-# Initialize pygame.mixer before creating Tkinter root window
+# Initialize pygame.mixer before creating inter root window
 pygame.mixer.init()
 
-# Create the Tkinter root window
-root = tk.Tk()
+# Create the inter root window
+root = .()
 root.title("Music Player")
 root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
@@ -70,16 +70,16 @@ buttons = []
 selectedFiles = load_selectedFiles()
 
 # Create a button for selecting and playing music
-select_button = tk.Button(root, text="Select Music", command=select_music)
+select_button = .Button(root, text="Select Music", command=select_music)
 select_button.pack(pady=20)
 
 # Create a scale for setting the volume
-volume_scale = tk.Scale(root, from_=1, to=100, orient=tk.HORIZONTAL, label="Volume", command=set_volume)
+volume_scale = .Scale(root, from_=1, to=100, orient=.HORIZONTAL, label="Volume", command=set_volume)
 volume_scale.pack(pady=10)
 
 # Load previously selected files
 for file_path in selectedFiles:
     add_button(file_path)
 
-# Run the Tkinter event loop
+# Run the inter event loop
 root.mainloop()

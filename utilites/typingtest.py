@@ -2,19 +2,19 @@ import time
 import random
 
 # Existing functions
-def typing_test(rounds=3):
+def typing_test():
     sentences = [
         "The quick brown fox jumps over the lazy dog.",
         "A journey of a thousand miles begins with a single step.",
         "To be or not to be, that is the question.",
         "All that glitters is not gold.",
-        "In the end, we only regret the chances we didn't take."
+        "In the end, we only regret the chances we didn't take.",
+        "In 1969, Neil Amstrong walked the moon.",
+        "It's all about the journey, not the destination"
     ]
 
     total_time = 0
     total_words_typed = 0
-    mistake_dict = {}  # Dictionary to track mistakes
-
     
     sentence = random.choice(sentences)
 
@@ -44,8 +44,8 @@ def typing_test(rounds=3):
 
 
 def calculate_accuracy(reference, typed):
-    reference_words = reference.split()
-    typed_words = typed.split()
+    reference_words = list(reference)
+    typed_words = list(typed)
 
     correct_words = 0
     for ref_word, typed_word in zip(reference_words, typed_words):

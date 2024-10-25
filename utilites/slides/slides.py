@@ -1,57 +1,102 @@
 import tkinter as tk
-from pynput import mouse
 
+slides = [
+    {"title": "", "text": "", "font": "Arial"}
+]
+slideIndex = 0
+def changeFont(thing: tk.Text, newfont):
+    try:
+        # Get the current selection range
+        start_index = thing.index(tk.SEL_FIRST)  
+        end_index = thing.index(tk.SEL_LAST)  
+        thing.tag_configure('font_change', font=(newfont, 18))  
+        thing.tag_add('font_change', start_index, end_index)
+    except tk.TclError:
+        thing.config(font=(newfont, 18))
 
-class MovableTextBox:
-    def __init__(self, root, x, y):
-        self.root = root
-        
-        # Create the text box with a custom border color and thickness
-        self.textBox = tk.Text(root, height=5, width=20, 
-                                highlightthickness=2,             # Border thickness
-                                highlightbackground="red",        # Border color (when not focused)
-                                highlightcolor="blue")             # Border color (when focused)
-        # Place the text box at the provided x, y coordinates
-        self.textBox.place(x=x, y=y)
-        
-        # Bind mouse events to the text box
-        self.textBox.bind("<ButtonPress-1>", self.startMove)
-        self.textBox.bind("<B1-Motion>", self.onDrag)
+def updateSlide():
+    global slideIndex
+    title.delete(0, tk.END)
+    title.insert(0, slides[slideIndex]["title"])
+    
+    text.delete(1.0, tk.END)
+    text.insert(tk.END, slides[slideIndex]["text"])
 
-    # Method to handle the start of the move
-    def startMove(self, event):
-        self.startX = event.x
-        self.startY = event.y
+def saveSlide():
+    global slideIndex
+    slides[slideIndex]["title"] = title.get()
+    slides[slideIndex]["text"] = text.get(1.0, tk.END).strip()
 
-    # Method to handle dragging
-    def onDrag(self, event):
-        # Calculate the new position
-        dx = event.x - self.startX
-        dy = event.y - self.startY
-        x = self.textBox.winfo_x() + dx
-        y = self.textBox.winfo_y() + dy
+def nextSlide():
+    global slideIndex
+    if slideIndex < len(slides) - 1:
+        saveSlide()  # Save current text data before moving to the next one
+        slideIndex += 1
+        updateSlide()
 
-        # Move the text box to the new position
-        self.textBox.place(x=x, y=y)
+def previousSlide():
+    global slideIndex
+    if slideIndex > 0:
+        saveSlide()  # Save current text data before moving to the previous one
+        slideIndex -= 1
+        updateSlide()
 
-class NewTextBox:
-    def __init__(self, root):
-        self.root = root
-        with mouse.Listener(on_click=self.on_click) as listener:
-            listener.join()
-    def on_click(self, x, y, button, pressed):
-        if pressed:
-            if button == "left":
-                MovableTextBox(self.root, x, y)
+def newSlide():
+    global slideIndex
+    slides.append({"title": "", "text": "", "font": "Arial"})
+    saveSlide()
+    slideIndex = len(slides) - 1
+    updateSlide()
 
+def toSlide(slideNum):
+    global slideIndex
+    slideIndex = slideNum - 1
+    updateSlide()
+
+def controlMode():
+    return True
 
 root = tk.Tk()
-root.title("Movable Text Box Example")
-root.geometry("800x600")
+screenWidth = root.winfo_screenwidth()
+screenHeight = root.winfo_screenheight()
+root.title("Notes")
+root.geometry(f"{screenWidth}x{screenHeight}")
 
-slide = tk.Text(root, width=80, height=30)
-slide.pack(side="bottom")
-createText = tk.Button(root, text="Text Box", command=NewTextBox(root))
-createText.pack(side="top")
+title = tk.Entry(root, font=("Arial", 24), width=40)
+title.pack(pady=30)
+
+text = tk.Text(root, font=("Arial", 16), wrap=tk.WORD, height=15, width=70)
+text.pack(pady=10)
+
+prev_button = tk.Button(root, text="Previous slide", command=previousSlide())
+prev_button.pack(side=tk.LEFT, padx=20, pady=20)
+
+next_button = tk.Button(root, text="Next slide", command=nextSlide())
+next_button.pack(side=tk.RIGHT, padx=20, pady=20)
+
+newSlideButton = tk.Button(root, text="New slide", command=newSlide)
+newSlideButton.pack(side=tk.TOP)
+
+text.bind("<Left>", previousSlide())
+text.bind("<Right>", nextSlide())
+
+menuBar = tk.Menu(root)
+root.config(menu=menuBar)
+changeFontMenu = tk.Menu(menuBar, tearoff=0)
+
+changeFontMenu.add_command(label="Arial", command=lambda: changeFont(text, "Arial"))
+changeFontMenu.add_command(label="Courier", command=lambda: changeFont(text, "Courier"))
+changeFontMenu.add_command(label="Verdana", command=lambda: changeFont(text, "Verdana"))
+changeFontMenu.add_command(label="Impact", command=lambda: changeFont(text, "Impact"))
+changeFontMenu.add_command(label="Tahoma", command=lambda: changeFont(text, "Tahoma"))
+menuBar.add_cascade(label="Font", menu=changeFontMenu)
+
+quickScroll = tk.Menu(menuBar, tearoff=0)
+counter = 1
+for i in slides:
+    quickTitle = i["title"]
+    quickScroll.add_command(label=f"{counter}: {quickTitle}", command=toSlide(counter))
+    counter += 1
+menuBar.add_cascade(label="Slides", menu=quickScroll)
 
 root.mainloop()

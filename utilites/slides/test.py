@@ -1,10 +1,9 @@
-from pynput import mouse
+from tkinter import *
 
-# Function to handle mouse click events
-def on_click(x, y, button, pressed):
-    if pressed:
-        print(f"Mouse clicked at ({x}, {y}) with {button}")
+root = Tk()
 
-# Create an instance of Listener
-with mouse.Listener(on_click=on_click) as listener:
-    listener.join()
+canvas = Canvas(root)
+canvas.create_text(100, 100, text="hello")
+canvas.pack()
+
+root.mainloop()

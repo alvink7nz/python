@@ -6,7 +6,7 @@ import tkinter as tk
 class TypingTest():
     def __init__(self, root):
         self.root = root
-        self.words = ["house", "shoes", "hello", "can't", "gasps", "tears", "monks", "donut", "silly", "funny", "found", "hours", "lucky", "sucks", "mucks"]
+        self.words = ["house", "shoes", "hello", "can't", "gasps", "tears", "monks", "donut", "silly", "funny", "found", "hours", "lucky", "sucks", "mucks", "ducks"]
         self.total_time = 0
         self.total_words_typed = 0
         self.sentence = []
@@ -39,7 +39,6 @@ class TypingTest():
         self.finishLabel = tk.Label(root, text=f"\nTest completed!\nTyping Speed: {self.typing_speed:.0f} WPM\nAccuracy: {self.accuracy:.0f}%\nReal Speed: {self.typing_speed:.0f} WPM x {self.accuracy:.0f}% = {self.real_speed:.0f} WPM")
         self.finishLabel.pack()
 
-
 def calculate_accuracy(reference, typed):
     reference_words = list(reference)
     typed_words = list(typed)
@@ -58,7 +57,9 @@ def playAgain(root:tk.Tk):
     playing = True
 def playNoMore(root:tk.Tk):
     root.destroy
+
 root = tk.Tk()
+root.geometry("800x600")
 
 playing = True
 while playing:

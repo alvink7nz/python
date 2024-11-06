@@ -3,18 +3,12 @@ import tkinter as tk
 def getPasswords():
     with open("c:/Users/alvin/code/python/utilites/sign-in/passwords.txt", 'r') as passwordText:
         basepasswords = passwordText.read()
-        basepasswords = basepasswords.split(",")
+        basepasswords = basepasswords.split(", ")
         passwords = {}
         
         for password in basepasswords:
             password = password.split(": ")
-            
-            # Check if the split results in exactly 2 items (key and value)
-            if len(password) == 2:
-                passwords[password[0]] = password[1]
-            else:
-                # Optionally handle malformed entries here
-                print(f"Skipping malformed entry: {password}")
+            return passwords
 
 passwords = getPasswords()
 

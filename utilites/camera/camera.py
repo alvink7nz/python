@@ -6,9 +6,9 @@ from PIL import Image, ImageTk
 from time import sleep
 
 def capture_image(cap:cv2.VideoCapture):
-    sleep(1)
     ret, frame = cap.read()
     if ret:
+        sleep(1)
         name = askstring("Name", "Enter name of picture")
         if name:
             cv2.imwrite(f"c:/Users/alvin/Downloads/Pictures/{name}.png", frame)

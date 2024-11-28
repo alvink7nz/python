@@ -4,13 +4,22 @@ from tkinter.simpledialog import askstring
 import sys
 from io import StringIO
 root = Tk()
-script = ScrolledText(root, width=50, height=15)
+SCREENWIDTH = root.winfo_screenwidth()
+SCREENHEIGHT = root.winfo_screenheight()
+root.geometry(f"{SCREENWIDTH}x{SCREENHEIGHT}")
+script = ScrolledText(root, width=180, height=40)
+with open("c:/Users/alvin/code/python/utilites/compiler/code.txt", "r") as oldCode:
+    oldCode = oldCode.read()
+    script.insert(END, oldCode)
+
 script.pack()
 def input(prompt):
     result = askstring("Input", prompt)
     return result
 def run_code():
     code = script.get("1.0", END)
+    with open("c:/Users/alvin/code/python/utilites/compiler/code.txt", "w") as oldCode:
+        oldCode.write(code)
     old_stdout = sys.stdout
     redirectedOutput = sys.stdout = StringIO()
     try:

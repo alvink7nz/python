@@ -76,11 +76,10 @@ for z in range(15):
         height = noise([x*0.02, z*0.02])
         height = math.floor(height * 7.5)
         block = Block(texture="grass.png" ,position=(x, height, z))
-        block = Block(texture="dirt.jpg", position=(x, height-1, z))
         for y in range(2):
-            block = Block(texture="stone.jpg", position=(x, height-y-2, z))
+            block = Block(texture="dirt.jpg", position=(x, height-y-1, z))
         for y in range(height+4):
-            block = Block(texture="bedrock.png", position=(x, height-y-4, z))
+            block = Block(texture="bedrock.png", position=(x, height-y-3, z))
         
         row.append(height)
     heightMap.append(row)
@@ -121,7 +120,7 @@ def generate_tree(x, y, z):
                 if abs(dx) + abs(dz) <= size:
                     Block(position=(x + dx, y + 3 + level, z + dz), texture='leaves.png')  # Leaf block
 
-generate_trees(heightMap, random.randint(1,4))
+generate_trees(heightMap, random.randint(0,4))
 
 def update():
     global holdingBlock
@@ -165,8 +164,10 @@ for i in range(inventory_size):
             )
     except IndexError:
         pass
-    
-    inventory_slots.append(slot)
+    try:
+        inventory_slots.append(slot)
+    except NameError:
+        pass
 
 # Update the texture of the inventory slots
 def update_inventory():

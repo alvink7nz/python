@@ -4,15 +4,15 @@ from tkinter.font import Font
 
 root = Tk("Writing")
 
-mainFont = Font(family="Arial", size=18, underline=True)
+mainFont = Font(family="Arial", size=18)
 
 SCREENWIDTH = root.winfo_screenwidth()
 SCREENHEIGHT = root.winfo_screenheight()
 root.configure(bg="blue")
 root.geometry(f"{SCREENWIDTH}x{SCREENHEIGHT}")
-script = ScrolledText(root, width=115, height=20, font=mainFont)
+script = ScrolledText(root, width=90, height=20, font=mainFont)
 script.configure(bg="lightblue")
-script.pack()
+script.place(x=300, y=20)
 with open("c:/Users/alvin/code/python/utilites/writing/writing.txt", "r") as oldText:
     oldText = oldText.read()
     script.insert(END, oldText)
@@ -23,6 +23,6 @@ def submit(text:ScrolledText):
         textToWriteInto.write(text)
 
 submitButton = Button(root, text="Save Writing", command=lambda x=script: submit(x))
-submitButton.pack()
+submitButton.place(x=850, y=570)
 
 root.mainloop()

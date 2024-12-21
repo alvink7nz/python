@@ -7,7 +7,7 @@ app = Ursina()
 
 seed = random.randint(-10000, 10000)
 
-noise = PerlinNoise(octaves=3, seed=seed)
+noise = PerlinNoise(octaves=3, seed=-5567)
 
 player = FirstPersonController()
 player.cursor.texture = "cursor.png"
@@ -70,7 +70,7 @@ class Block(Button):
 
 
 heightMap = []
-for z in range(15):
+for z in range(20):
     row = []
     for x in range(15):
         height = noise([x*0.02, z*0.02])
@@ -138,8 +138,13 @@ def update():
         player.speed = 10
     else:
         player.speed = 5
-
-    fps_counter.text = f'FPS: {int(1 / time.dt)}'
+    fps = int(1 / time.dt)
+    if fps < 40 and fps > 20:
+        fps_counter.text = 'FPS: Okay'
+    elif fps > 40:
+        fps_counter.text = 'FPS: Good'
+    else:
+        fps_counter.text = 'FPS: Bad'
 
 
 inventory_slots = []

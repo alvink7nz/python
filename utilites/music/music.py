@@ -34,13 +34,13 @@ def delete_button_frame(frame, file_path):
     save_selectedFiles()
 
 def save_selectedFiles():
-    with open("files/music/selectedFiles.txt", "w") as file:
+    with open("c:/Users/alvin/code/python/utilites/music/selectedFiles.txt", "w") as file:
         for file_path in selectedFiles:
             file.write(f"{file_path}\n")
 
 def load_selectedFiles():
-    if os.path.exists("files/music/selectedFiles.txt"):
-        with open("files/music/selectedFiles.txt", "r") as file:
+    if os.path.exists("c:/Users/alvin/code/python/utilites/music/selectedFiles.txt"):
+        with open("c:/Users/alvin/code/python/utilites/music/selectedFiles.txt", "r") as file:
             return [line.strip() for line in file.readlines()]
     else:
         return []

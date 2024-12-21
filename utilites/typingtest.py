@@ -20,8 +20,8 @@ class TypingTest():
         self.startLabel.bind("<Return>", self.typing)
     def typing(self):
         self.start_time = time.time()
-        typingLabel = tk.Label(root, text="\nStart typing here: ")
-        typingLabel.pack()
+        self.typingLabel = tk.Label(root, text="\nStart typing here: ")
+        self.typingLabel.pack()
         self.textbox = tk.Text(root, width=50, height=1)
         self.end_time = time.time()
         self.text = self.textbox.get("1.0", tk.END)
@@ -65,7 +65,6 @@ playing = True
 while playing:
     TypingTest(root)
     playingLabel = tk.Label(root, text="Again? (y/n)")
-    playingY = playingLabel.bind("y", playAgain)
-    playingX = playingLabel.bind("n", playNoMore)
-
-root.mainloop()
+    playingY = playingLabel.bind("y", lambda x=root: playAgain(x))
+    playingX = playingLabel.bind("n", lambda x=root: playNoMore(x))
+    root.mainloop()

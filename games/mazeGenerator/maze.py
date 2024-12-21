@@ -16,6 +16,7 @@ class MazeGenerator:
 
     def generate(self):
         # Start carving from the start point
+        self.maze = [[1 for _ in range(self.width)] for _ in range(self.height)]
         self.maze[self.start_y][self.start_x] = 0
         self.visited.add((self.start_x, self.start_y))
         self.path_stack.append((self.start_x, self.start_y))
@@ -82,16 +83,15 @@ class MazeGenerator:
         return path
 
 class MazeApp:
-    def __init__(self, root, width, height, cell_size):
+    def __init__(self, root, width, height, cell_size, canvas:tk.Canvas):
         # Increase height relative to width for a taller maze
         self.root = root
         self.width = width
         self.height = height  # Add extra rows for height
         self.cell_size = cell_size
+        self.canvas = canvas
 
         # Adjust canvas height dynamically based on new maze height
-        self.canvas = tk.Canvas(root, width=width * cell_size, height=self.height * cell_size)
-        self.canvas.pack()
 
         # Generate the maze
         self.maze_gen = MazeGenerator(self.width, self.height)
@@ -99,8 +99,6 @@ class MazeApp:
         self.path = []
 
         # Solve button
-        self.solve_button = tk.Button(root, text="Solve Maze", command=self.solve_maze)
-        self.solve_button.pack()
 
         # Draw the maze
         self.draw_maze()
@@ -122,6 +120,7 @@ class MazeApp:
 
     def animate_solution(self, path):
         """Animate the solution path."""
+        print(path)
         if not path:
             return
 
@@ -129,14 +128,14 @@ class MazeApp:
             if index < len(path):
                 x, y = path[index]
                 self.canvas.create_rectangle(
-                    x * self.cell_size + 2,
-                    y * self.cell_size + 2,
-                    (x + 1) * self.cell_size - 2,
-                    (y + 1) * self.cell_size - 2,
+                    x * self.cell_size,
+                    y * self.cell_size,
+                    (x + 1) * self.cell_size,
+                    (y + 1) * self.cell_size,
                     fill="green",
                     outline=""
                 )
-                self.root.after(50, draw_step, index + 1)  # Delay for smooth animation
+                self.root.after(20, draw_step, index + 1)  # Delay for smooth animation
 
         draw_step(0)
 
@@ -145,7 +144,9 @@ class MazeApp:
         self.path = self.maze_gen.solve_maze()
         self.animate_solution(self.path)
 
-
+    def createNewMaze(self):
+        self.canvas.delete("all")
+        app = MazeApp(self.root, 45, 45, 10, self.canvas)
 
 # Main Execution
 if __name__ == "__main__":
@@ -155,7 +156,11 @@ if __name__ == "__main__":
     maze_width = 45  # Maze width
     maze_height = 45  # Maze height
     cell_size = 10  # Size of each cell in pixels
-
-    app = MazeApp(root, maze_width, maze_height, cell_size)
-
+    canvas = tk.Canvas(root, width=maze_width * cell_size, height=maze_height * cell_size)
+    canvas.pack()
+    app = MazeApp(root, maze_width, maze_height, cell_size, canvas)
+    solve_button = tk.Button(root, text="Solve Maze", command=app.solve_maze)
+    solve_button.pack(side="bottom")
+    newMazeButton = tk.Button(root, text="New Maze", command=app.createNewMaze)
+    newMazeButton.pack(side="bottom")
     root.mainloop()

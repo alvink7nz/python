@@ -120,7 +120,6 @@ class MazeApp:
 
     def animate_solution(self, path):
         """Animate the solution path."""
-        print(path)
         if not path:
             return
 

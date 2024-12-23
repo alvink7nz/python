@@ -7,7 +7,7 @@ app = Ursina()
 
 seed = random.randint(-10000, 10000)
 
-noise = PerlinNoise(octaves=3, seed=-5567)
+noise = PerlinNoise(octaves=3, seed=4850)
 
 player = FirstPersonController()
 player.cursor.texture = "cursor.png"

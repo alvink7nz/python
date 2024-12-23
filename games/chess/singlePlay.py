@@ -1,10 +1,17 @@
 import tkinter as tk
+import chess
+
+def clear_root():
+    # Iterate through all child widgets of the root
+    for widget in chess.root.winfo_children():
+        widget.destroy()
+
 
 class Chess:
     def __init__(self):
-        self.root = tk.Tk()
-        self.root.geometry("800x600")
-        self.root.title("Chess")
+        print("debug")
+        self.root = chess.root
+        clear_root()
         
         # Chessboard and pieces
         self.board = self.initialize_board()

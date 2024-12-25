@@ -1,17 +1,9 @@
 import tkinter as tk
-import chess
-
-def clear_root():
-    # Iterate through all child widgets of the root
-    for widget in chess.root.winfo_children():
-        widget.destroy()
-
 
 class Chess:
-    def __init__(self):
-        print("debug")
-        self.root = chess.root
-        clear_root()
+    def __init__(self, root):
+        self.root = root
+        self.clear_root()
         
         # Chessboard and pieces
         self.board = self.initialize_board()
@@ -21,6 +13,11 @@ class Chess:
 
         # Draw the board
         self.create_board()
+
+    def clear_root(self):
+        # Iterate through all child widgets of the root
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
     def initialize_board(self):
         """Initializes the chessboard with pieces."""

@@ -43,7 +43,7 @@ dates.sort(key=lambda x: x[1])
 for date in dates:
     daysUntil = differences(date[1], dateTodayDate)
     eventName = date[0]
-    display = f"It is {daysUntil[0]} days until {eventName}"
+    display = f"There are {daysUntil[0]} days until {eventName}"
     c.create_text(30, verticalSpace, anchor="w", fill="black", font="Arial 30 bold", text=display)
     verticalSpace += 32
 

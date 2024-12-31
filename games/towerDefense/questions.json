@@ -1,0 +1,78 @@
+
+[
+    {
+        "question": "What is the capital of Japan?",
+        "options": ["Seoul", "Tokyo", "Beijing", "Bangkok"],
+        "answer": "Tokyo"
+    },
+    {
+        "question": "What is 12 x 8?",
+        "options": ["96", "84", "108", "92"],
+        "answer": "96"
+    },
+    {
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Earth", "Mars", "Jupiter", "Venus"],
+        "answer": "Mars"
+    },
+    {
+        "question": "What is the chemical symbol for water?",
+        "options": ["H2O", "O2", "CO2", "HO2"],
+        "answer": "H2O"
+    },
+    {
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "options": ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
+        "answer": "William Shakespeare"
+    },
+    {
+        "question": "What is the square root of 64?",
+        "options": ["6", "8", "7", "9"],
+        "answer": "8"
+    },
+    {
+        "question": "Which country is known as the Land of the Rising Sun?",
+        "options": ["China", "India", "Japan", "Thailand"],
+        "answer": "Japan"
+    },
+    {
+        "question": "How many continents are there on Earth?",
+        "options": ["5", "6", "7", "8"],
+        "answer": "7"
+    },
+    {
+        "question": "What is the freezing point of water in Celsius?",
+        "options": ["-10", "0", "10", "32"],
+        "answer": "0"
+    },
+    {
+        "question": "Which ocean is the largest?",
+        "options": ["Atlantic", "Indian", "Arctic", "Pacific"],
+        "answer": "Pacific"
+    },
+    {
+        "question": "Who is known as the father of computers?",
+        "options": ["Alan Turing", "Charles Babbage", "Bill Gates", "Steve Jobs"],
+        "answer": "Charles Babbage"
+    },
+    {
+        "question": "What is the smallest prime number?",
+        "options": ["0", "1", "2", "3"],
+        "answer": "2"
+    },
+    {
+        "question": "Which animal is known as the King of the Jungle?",
+        "options": ["Tiger", "Elephant", "Lion", "Bear"],
+        "answer": "Lion"
+    },
+    {
+        "question": "Which gas do plants primarily absorb during photosynthesis?",
+        "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        "answer": "Carbon Dioxide"
+    },
+    {
+        "question": "How many legs do spiders have?",
+        "options": ["6", "8", "10", "12"],
+        "answer": "8"
+    }
+]

@@ -4,7 +4,7 @@ import math
 import scrambleGenerator
 
 class TimerApp:
-    def __init__(self, root, scramble):
+    def __init__(self, root:tk.Tk, scramble):
         self.root = root
         self.root.title("Timer App")
 
@@ -17,17 +17,22 @@ class TimerApp:
         self.running = False
         self.start_time = 0
         self.elapsed_time = 0
+        self.root.bind('<KeyRelease-space>', self.startTimer)
 
-        root.bind('<space>', self.toggle_timer)
+    def startTimer(self, event):
+        self.running = True
+        self.start_time = time.time()
+        self.update_timer()
+        root.bind('<space>', self.stopTimer)
 
-    def toggle_timer(self, event):
-        if not self.running:
-            self.running = True
-            self.start_time = time.time()
-            self.update_timer()
-        else:
-            self.running = False
-            self.elapsed_time = time.time() - self.start_time
+    def stopTimer(self, event):
+        self.running = False
+        self.elapsed_time = time.time() - self.start_time
+        self.root.unbind('KeyRelease-space')
+        self.root.unbind('space')
+        time.sleep(1)
+        self.root.bind('<KeyRelease-space>', self.startTimer)
+        root.bind('<space>', self.stopTimer)
 
     def update_timer(self):
         if self.running:

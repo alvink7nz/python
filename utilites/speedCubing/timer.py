@@ -1,6 +1,5 @@
 import tkinter as tk
 import time
-import math
 import scrambleGenerator
 
 class TimerApp:
@@ -9,7 +8,7 @@ class TimerApp:
         self.root.title("Timer App")
 
         self.scramble = tk.Label(root, text=scramble, font=("Helvetica", 24))
-        self.scramble.place(x=150, y=50)
+        self.scramble.place(x=120, y=50)
 
         self.time_label = tk.Label(root, text="0.00", font=("Helvetica", 100))
         self.time_label.place(x=400, y=250)
@@ -28,11 +27,11 @@ class TimerApp:
     def stopTimer(self, event):
         self.running = False
         self.elapsed_time = time.time() - self.start_time
-        self.root.unbind('KeyRelease-space')
-        self.root.unbind('space')
-        time.sleep(1)
-        self.root.bind('<KeyRelease-space>', self.startTimer)
-        root.bind('<space>', self.stopTimer)
+        self.root.unbind("<KeyRelease-space>")
+        self.root.after(100, self.resetTimer)
+
+    def resetTimer(self):
+        self.root.bind("<KeyRelease-space>", self.startTimer)
 
     def update_timer(self):
         if self.running:

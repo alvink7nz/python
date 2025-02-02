@@ -13,4 +13,3 @@ while goodMoves < 15:
         letter = "".join([letter, acsessory])
         scramble = " ".join([scramble, letter])
         goodMoves += 1
-print(scramble)

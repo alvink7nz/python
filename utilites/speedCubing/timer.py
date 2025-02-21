@@ -7,6 +7,8 @@ class TimerApp:
         self.root = root
         self.root.title("Timer App")
 
+        self.letterScramble = scramble
+
         self.scramble = tk.Label(root, text=scramble, font=("Helvetica", 24))
         self.scramble.place(x=120, y=50)
 
@@ -28,7 +30,7 @@ class TimerApp:
         self.running = False
         self.elapsed_time = time.time() - self.start_time
         self.root.unbind("<KeyRelease-space>")
-        self.root.after(100, self.resetTimer)
+        self.root.after(300, self.resetTimer)
 
     def resetTimer(self):
         self.root.bind("<KeyRelease-space>", self.startTimer)
